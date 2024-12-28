@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../fonts/PressStart2P-Regular.ttf.xhtml') format('truetype');
+}
+
+html, body, pre, code, kbd, samp {
+    font-family: 'PressStart2P';
+}

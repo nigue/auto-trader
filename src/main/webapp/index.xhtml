@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+<h:head>
+    <title>JSF con Jakarta EE</title>
+    <h:outputStylesheet name="css/nes.min.css" />
+    <h:outputStylesheet name="css/style.css" />
+</h:head>
+<h:body>
+    
+    
+    <div class="nes-container is-dark with-title">
+      <p class="title">Trading Machine</p>
+      <span class="nes-text is-primary">Login</span>
+      <p>Hi this is the login of the site</p>
+      <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
+        <label for="key_field" style="color:#fff;">key</label>
+        <input type="text" id="key_field" class="nes-input is-dark" placeholder="paste your key"></input>
+      </div>
+      <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
+        <label for="secret_field" style="color:#fff;">secret</label>
+        <input type="text" id="secret_field" class="nes-input is-dark" placeholder="paste your secret"></input>
+      </div>
+      <button type="button" class="nes-btn is-primary">Enter</button>
+    </div>
+    
+    <h1>¡Hola, JSF con Jakarta EE! 29</h1>
+    <h:form>
+        <h:inputText value="#{beanEjemplo.nombre}" />
+        <h:commandButton value="Enviar" action="#{beanEjemplo.saludar}" />
+    </h:form>
+    <h:outputText value="#{beanEjemplo.mensaje}" />
+</h:body>
+</html>
