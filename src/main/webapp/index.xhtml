@@ -11,16 +11,19 @@
     
     <div class="nes-container is-dark with-title">
         <span class="nes-text is-primary">Login</span>
-        <p>Hi this is the login of the site</p>
-        <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
-            <label for="key_field" style="color:#fff;">key</label>
-            <input type="text" id="key_field" class="nes-input is-dark" placeholder="paste your key"></input>
-        </div>
-        <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
-            <label for="secret_field" style="color:#fff;">secret</label>
-            <input type="text" id="secret_field" class="nes-input is-dark" placeholder="paste your secret"></input>
-        </div>
+        <p>Active: <h:outputText value="#{index.active}" /></p>
+        
         <h:form>
+            <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
+                <label for="key_field" style="color:#fff;">key</label>
+                <h:inputText id="key_field" 
+                             class="nes-input is-dark" 
+                             value="#{index.key}" />
+            </div>
+            <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
+                <label for="secret_field" style="color:#fff;">secret</label>
+                <input type="text" id="secret_field" class="nes-input is-dark" placeholder="paste your secret"></input>
+            </div>
             <h:commandButton value="Enter" class="nes-btn is-primary" action="#{index.login}" />
         </h:form>
     </div>
