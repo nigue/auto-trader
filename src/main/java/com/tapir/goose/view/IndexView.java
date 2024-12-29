@@ -43,7 +43,10 @@ public class IndexView implements Serializable {
         logger.info("Login at {}", new Date());
         logger.info("Login with key: {}", key);
         
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("key", key);
+        FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .put("key", key);
         
         return "site";
     }
