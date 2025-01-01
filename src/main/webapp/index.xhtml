@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Lorem Ipsum</title>
     <h:outputStylesheet name="css/nes.min.css" />
     <h:outputStylesheet name="css/style.css" />
+    <h:outputScript>
+        //if (typeof jsf !== 'undefined') {
+        //    jsf.ajax.addOnEvent(someFunctionName);
+        //}
+        // Función para actualizar el texto del step en el cliente
+        function actualizarStep() {
+            // Cada 3 segundos, hace una llamada AJAX para obtener el nuevo valor
+            setInterval(function () {
+                // Se ejecuta el renderizado AJAX para actualizar el componente
+                faces.ajax.request('form:step', {
+                    render: 'form:step',
+                    execute: 'form:step'
+                });
+            }, 1000);
+        }
+    </h:outputScript>
 </h:head>
 <h:body>
-    
     
     <div class="nes-container is-dark with-title">
         <span class="nes-text is-primary">Login</span>
@@ -21,37 +37,46 @@
                              value="#{index.key}" />
             </div>
             <div style="background-color:#212529; padding: 1rem;" class="nes-field is-inline">
-                <label for="secret_field" style="color:#fff;">secret</label>
-                <input type="text" id="secret_field" class="nes-input is-dark" placeholder="paste your secret"></input>
+                <label for="secret_field"
+                       style="color:#fff;">secret</label>
+                <input type="text"
+                       id="secret_field"
+                       class="nes-input is-dark"
+                       placeholder="paste your secret"/>
             </div>
-            <h:commandButton value="Enter" class="nes-btn is-primary" action="#{index.login}" />
+            <h:commandButton value="Enter"
+                             class="nes-btn is-primary"
+                             action="#{index.login}" />
         </h:form>
     </div>
     
     <h1>¡Hola, JSF con Jakarta EE!</h1>
     <h:form>
         <h:inputText value="#{beanEjemplo.nombre}" />
-        <h:commandButton value="Enviar" action="#{beanEjemplo.saludar}" />
+        <h:commandButton value="Enviar" action="#{beanEjemplo.saludar}"/>
     </h:form>
     <h:outputText value="#{beanEjemplo.mensaje}" />
 
+    <h:form id="form">
+        <!-- OutputText para mostrar el step -->
+        <h:outputText id="step" value="#{index.step}" />
 
-    <!-- Dialog -->
-    <section>
-        <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
-            Open dialog
-        </button>
-        <dialog class="nes-dialog" id="dialog-default">
-            <form method="dialog">
-                <p class="title">Dialog</p>
-                <p>Alert: this is a dialog.</p>
-                <menu class="dialog-menu">
-                    <button class="nes-btn">Cancel</button>
-                    <button class="nes-btn is-primary">Confirm</button>
-                </menu>
-            </form>
-        </dialog>
-    </section>
+        <!-- Botón para iniciar la simulación -->
+        <h:commandButton value="Iniciar" action="#{index.enter}"
+                         disabled="#{index.running}">
+            <f:ajax render="step" />
+        </h:commandButton>
+
+        <!-- Indicador de ejecución -->
+        <h:outputText value="Proceso en ejecución..."
+                      rendered="#{index.running}" style="color: red;" />
+    </h:form>
+
+    <h:outputScript>
+        if (!#{index.running}) {
+            actualizarStep();
+        }
+    </h:outputScript>
 
 </h:body>
 </html>
