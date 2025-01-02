@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Login</title>
+    <h:outputScript>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof faces !== 'undefined' &amp;&amp; faces.ajax) {
+                console.log('El objeto faces está disponible.');
+            } else {
+                console.error('El objeto faces no está disponible.');
+            }
+        });
+    </h:outputScript>
+</h:head>
+<h:body>
+
+    <h1>Login v 3</h1>
+    <h:form>
+        <h:commandButton value="Enter"
+                         action="#{login.execute}" >
+            <f:ajax render="step" />
+        </h:commandButton>
+        <h:outputText id="step"
+                      value="#{login.loadStep}" />
+    </h:form>
+
+</h:body>
+</html>
