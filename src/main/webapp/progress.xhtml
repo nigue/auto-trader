@@ -3,7 +3,8 @@
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
     <script>
-        function monitor(data){
+        function monitor(data) {
+            console.log('El objeto faces está disponible.');
             var loading = document.getElementById("image");
             if(data.status == "begin"){
                 loading.style.display = "block";
@@ -21,14 +22,13 @@
         <h2>JSF2 Ajax Monitoring Example</h2>
         <h:form prependId="false">
             <h:inputText id="input" value="#{indexBean.message}"/>
-            #{' '}
             <h:commandButton value="Display Text" action="#{indexBean.action}">
-                <f:ajax execute="@this input" render="output" onevent="monitor"></f:ajax>
+                <f:ajax execute="@this input" render="output" onevent="monitor"/>
             </h:commandButton>
-            #{' '}
-            <h:outputText id="output" value="#{indexBean.message}"></h:outputText>
-            <h:graphicImage id="image" value="#{resource['images:ajax-loader.gif']}" style="display:none;"></h:graphicImage>
-
+            <h:outputText id="output" value="#{indexBean.message}"/>
+            <h:graphicImage id="image"
+                            value="#{resource['images:ajax-loader.gif']}"
+                            style="display:none;"/>
         </h:form>
     </f:view>
 </h:body>
