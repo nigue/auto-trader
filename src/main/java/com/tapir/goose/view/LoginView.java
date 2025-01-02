@@ -30,12 +30,17 @@ public class LoginView implements Serializable {
     }
 
     public void execute() throws InterruptedException {
+
+        logger.info("loadStep: {}", loadStep);
         loadStep++;
         Thread.sleep(2000);
+        logger.info("loadStep: {}", loadStep);
         loadStep++;
         Thread.sleep(2000);
+        logger.info("loadStep: {}", loadStep);
         loadStep++;
         Thread.sleep(2000);
+        logger.info("loadStep: {}", loadStep);
         loadStep++;
     }
 

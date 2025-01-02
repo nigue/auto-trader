@@ -12,17 +12,31 @@
                 console.error('El objeto faces no está disponible.');
             }
         });
+
+        let intervalId;
+
+        function startPolling() {
+            intervalId = setInterval(updateStep, 1000);
+        }
+
+        function updateStep() {
+            console.log('polling ini');
+            let form = document.getElementById('form-login');
+            faces.ajax.request(form, null, {render: 'step-login'});
+            console.log('polling end');
+        }
     </h:outputScript>
 </h:head>
 <h:body>
 
     <h1>Login v <h:outputText value="#{login.dateView}" /></h1>
-    <h:form>
+    <h:form id="form-login">
         <h:commandButton value="Enter"
+                         onclick="startPolling();"
                          action="#{login.execute}" >
-            <f:ajax render="step" />
+            <f:ajax render="step-login" />
         </h:commandButton>
-        <h:outputText id="step"
+        <h:outputText id="step-login"
                       value="#{login.loadStep}" />
     </h:form>
 
