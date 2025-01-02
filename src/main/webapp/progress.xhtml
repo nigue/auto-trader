@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <script>
+        function monitor(data){
+            var loading = document.getElementById("image");
+            if(data.status == "begin"){
+                loading.style.display = "block";
+            }
+            else if(data.status == "success"){
+                loading.style.display = "none";
+            }
+        }
+    </script>
+    <h:outputScript library="javax.faces" name="jsf.js"/>
+</h:head>
+<h:body>
+    <f:view>
+        <h1>JavaBeat JSF 2.2 Examples</h1>
+        <h2>JSF2 Ajax Monitoring Example</h2>
+        <h:form prependId="false">
+            <h:inputText id="input" value="#{indexBean.message}"/>
+            #{' '}
+            <h:commandButton value="Display Text" action="#{indexBean.action}">
+                <f:ajax execute="@this input" render="output" onevent="monitor"></f:ajax>
+            </h:commandButton>
+            #{' '}
+            <h:outputText id="output" value="#{indexBean.message}"></h:outputText>
+            <h:graphicImage id="image" value="#{resource['images:ajax-loader.gif']}" style="display:none;"></h:graphicImage>
+
+        </h:form>
+    </f:view>
+</h:body>
+</html>
