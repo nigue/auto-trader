@@ -25,8 +25,8 @@ public class LoginView implements Serializable {
         return loadStep;
     }
 
-    public void setLoadStep(Integer loadStep) {
-        this.loadStep = loadStep;
+    public Long getDateView() {
+        return System.currentTimeMillis();
     }
 
     public void execute() throws InterruptedException {
@@ -34,6 +34,9 @@ public class LoginView implements Serializable {
         Thread.sleep(2000);
         loadStep++;
         Thread.sleep(2000);
+        loadStep++;
+        Thread.sleep(2000);
+        loadStep++;
     }
 
 }

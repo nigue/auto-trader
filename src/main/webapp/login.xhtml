@@ -16,7 +16,7 @@
 </h:head>
 <h:body>
 
-    <h1>Login v 3</h1>
+    <h1>Login v <h:outputText value="#{login.dateView}" /></h1>
     <h:form>
         <h:commandButton value="Enter"
                          action="#{login.execute}" >
