@@ -6,10 +6,9 @@
         function monitor(data) {
             console.log('El objeto faces está disponible.');
             var loading = document.getElementById("image");
-            if(data.status == "begin"){
+            if (data.status == "begin") {
                 loading.style.display = "block";
-            }
-            else if(data.status == "success"){
+            } else if (data.status == "success") {
                 loading.style.display = "none";
             }
         }
