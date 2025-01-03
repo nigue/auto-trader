@@ -1,10 +1,18 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof faces !== 'undefined' &amp;&amp; faces.ajax) {
+                console.log('El objeto faces está disponible.');
+            } else {
+                console.error('El objeto faces no está disponible.');
+            }
+        });
         function monitor(data) {
-            console.log('El objeto faces está disponible.');
+            console.log('monitor at: ' + Date.now());
             var loading = document.getElementById("image");
             if (data.status == "begin") {
                 loading.style.display = "block";
@@ -13,7 +21,6 @@
             }
         }
     </script>
-    <h:outputScript library="javax.faces" name="jsf.js"/>
 </h:head>
 <h:body>
     <f:view>
