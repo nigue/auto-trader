@@ -5,9 +5,12 @@
 <h:head>
     <title>Login</title>
     <h:outputScript>
+
+        let jsfAjax;
         document.addEventListener('DOMContentLoaded', function () {
             if (typeof faces !== 'undefined' &amp;&amp; faces.ajax) {
                 console.log('El objeto faces está disponible.');
+                jsfAjax = faces.ajax;
             } else {
                 console.error('El objeto faces no está disponible.');
             }
@@ -22,7 +25,7 @@
         function updateStep() {
             console.log('polling ini');
             let form = document.getElementById('form-login');
-            faces.ajax.request(form, null, {render: 'step-login'});
+            jsfAjax.request(form, null, {render: 'step-login'});
             console.log('polling end');
         }
     </h:outputScript>
