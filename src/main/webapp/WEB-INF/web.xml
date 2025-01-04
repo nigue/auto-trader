@@ -29,6 +29,6 @@
 
     <!-- Página de bienvenida -->
     <welcome-file-list>
-        <welcome-file>login.xhtml</welcome-file>
+        <welcome-file>progress.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>
