@@ -1,47 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
-    <title>Login</title>
-    <h:outputScript>
-
-        let jsfAjax;
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (typeof faces !== 'undefined' &amp;&amp; faces.ajax) {
                 console.log('El objeto faces está disponible.');
-                jsfAjax = faces.ajax;
             } else {
                 console.error('El objeto faces no está disponible.');
             }
         });
-
-        let intervalId;
-
-        function startPolling() {
-            intervalId = setInterval(updateStep, 1000);
+        function monitor(data) {
+            console.log('monitor at: ' + Date.now());
+            var loading = document.getElementById("image");
+            if (data.status == "begin") {
+                loading.style.display = "block";
+            } else if (data.status == "success") {
+                loading.style.display = "none";
+            }
         }
-
-        function updateStep() {
-            console.log('polling ini');
-            let form = document.getElementById('form-login');
-            jsfAjax.request(form, null, {render: 'step-login'});
-            console.log('polling end');
-        }
-    </h:outputScript>
+    </script>
 </h:head>
 <h:body>
-
-    <h1>Login v <h:outputText value="#{login.dateView}" /></h1>
-    <h:form id="form-login">
-        <h:commandButton value="Enter"
-                         onclick="startPolling();"
-                         action="#{login.execute}" >
-            <f:ajax render="step-login" />
-        </h:commandButton>
-        <h:outputText id="step-login"
-                      value="#{login.loadStep}" />
-    </h:form>
-
+    <f:view>
+        <h1>JavaBeat JSF 2.2 Examples</h1>
+        <h2>JSF2 Ajax Monitoring Example</h2>
+        <h:form id="login-form" prependId="false">
+            <h:inputText id="input" value="#{login.message}"/>
+            <h:commandButton value="Display Text" action="#{login.action}">
+                <f:ajax execute="@this input" render="output" onevent="monitor"/>
+                <f:ajax execute="@this input" render="login-error" onevent="monitor"/>
+            </h:commandButton>
+            <h:outputText id="output" value="#{login.message}"/>
+            <h:graphicImage id="image"
+                            value="#{resource['images:ajax-loader.gif']}"
+                            style="display:none;"/>
+            <h:messages id="login-error" globalOnly="true"/>
+        </h:form>
+    </f:view>
 </h:body>
 </html>
