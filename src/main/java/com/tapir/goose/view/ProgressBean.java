@@ -19,9 +19,9 @@ public class ProgressBean implements Serializable {
         this.message = message;
     }
 
-    public String action() throws Exception{
+    public String action() throws InterruptedException {
         Thread.sleep(6000);
         System.out.println(message);
-        return "";
+        return "site";
     }
 }
