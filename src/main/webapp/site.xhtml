@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+<html lang="en"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
 <h:head>
     <title>Site</title>
     <script>
@@ -12,18 +12,12 @@
                 console.error('El objeto faces no está disponible.');
             }
         });
-        function monitor(data) {
-            console.log('monitor at: ' + Date.now());
-            var loading = document.getElementById("image");
-            if (data.status == "begin") {
-                loading.style.display = "block";
-            } else if (data.status == "success") {
-                loading.style.display = "none";
-            }
-        }
     </script>
 </h:head>
 <h:body>
+    <h:graphicImage id="image"
+                    value="#{resource['images:spin-loader.gif']}"
+                    rendered="true"/>
     <f:view>
         <h1>Hi <h:outputText id="username" value="TEST_NAME"/></h1>
         <h:link value = "Configuration" outcome = "login" />
@@ -58,7 +52,7 @@
         </table>
         <h2>
             <h:outputText id="actual_symbol" value="BTC_USDT"/>
-            <h:outputText id="actual_date" value="29/12 00:42"/>
+            <h:outputText id="actual_date" value="#{site.date}"/>
         </h2>
         <table>
             <tr>

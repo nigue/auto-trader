@@ -20,14 +20,19 @@ public class SiteView implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(SiteView.class);
     
-    private Boolean loaded;
+    private Boolean loaded = false;
     private String key;
     private String date;
 
     @PostConstruct
-    public void init() throws InterruptedException {
+    public void init() {
+        logger.info("Enter to Site");
         loaded = false;
-        Thread.sleep(3000);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         key = (String) FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()
