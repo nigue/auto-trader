@@ -22,7 +22,7 @@ public class LoginView implements Serializable {
     @PostConstruct
     public void init() {
         logger.info("Init Login");
-        condition = false;
+        condition = true;
     }
 
     public String getMessage() {

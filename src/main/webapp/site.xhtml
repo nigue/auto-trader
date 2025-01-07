@@ -1,108 +1,82 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
-    <title>Lorem Ipsum</title>
-    <h:outputStylesheet name="css/nes.min.css" />
-    <h:outputStylesheet name="css/style.css" />
+    <title>Site</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof faces !== 'undefined' &amp;&amp; faces.ajax) {
+                console.log('El objeto faces está disponible.');
+            } else {
+                console.error('El objeto faces no está disponible.');
+            }
+        });
+        function monitor(data) {
+            console.log('monitor at: ' + Date.now());
+            var loading = document.getElementById("image");
+            if (data.status == "begin") {
+                loading.style.display = "block";
+            } else if (data.status == "success") {
+                loading.style.display = "none";
+            }
+        }
+    </script>
 </h:head>
 <h:body>
-    
-    <div class="nes-container is-dark with-title">
-      
-        <div id="user">
-            <div class="nes-badge is-icon">
-                <span class="is-warning">HI:</span>
-                <span class="is-primary">POTATO</span>
-            </div>
-            <h:outputText value="#{site.date}" />
-            <h:outputText value="#{site.key}" />
-            <button type="button" class="nes-btn">Configuration</button>
-        </div>
-        
-        <div id="sell-at">
-            <div class="nes-badge is-splited">
-                <span class="is-primary">USDT</span>
-                <span class="is-success">SELL</span>
-            </div>
-            <div class="nes-badge">
-                <span class="is-warning">0.5%</span>
-            </div>
-        </div>
-        
-        <div id="objetive">
-            <div class="nes-badge is-splited">
-                <span class="is-success">OBJ:</span>
-                <span class="is-primary">1.2%</span>
-            </div>
-            <div class="nes-badge">
-                <span class="is-warning">35.000</span>
-            </div>
-        </div>
-        
-        <div id="actual">
-            <div class="nes-badge">
-                <span class="is-warning">ACTUAL</span>
-            </div>
-            <div class="nes-badge">
-                <span class="is-error">32.000</span>
-            </div>
-        </div>
-      
-        <div class="nes-table-responsive">
-          <table class="nes-table is-bordered is-dark">
-            <thead>
-              <tr>
+    <f:view>
+        <h1>Hi <h:outputText id="username" value="TEST_NAME"/></h1>
+        <h:link value = "Configuration" outcome = "login" />
+        <h:link value = "Last Operations" outcome = "login" />
+        <h2>
+            <h:outputText id="asset" value="USDT"/>
+            <h:outputText id="action" value="SELL"/>
+            <h:outputText id="sell_percent" value="0.5%"/>
+        </h2>
+        <h2>
+            <h:outputText id="def_1" value="OBJ:"/>
+            <h:outputText id="objetive_percent" value="1.2%"/>
+            <h:outputText id="objetive_amount" value="35.000"/>
+        </h2>
+        <h2>
+            <h:outputText id="def_2" value="ACTUAL"/>
+            <h:outputText id="actual_amount" value="32.000"/>
+        </h2>
+        <table>
+            <tr>
                 <th>Symbol</th>
                 <th>Red Kl</th>
                 <th>Fall</th>
                 <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
+            </tr>
+            <tr>
                 <td>BTC_USDT</td>
                 <td>5</td>
                 <td>-3.2%</td>
-                <td><i class="nes-icon youtube is-large"></i></td>
-              </tr>
-              <tr>
-                <td>BTC_USDT</td>
-                <td>5</td>
-                <td>-3.2%</td>
-                <td><i class="nes-icon youtube is-large"></i></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <p class="nes-balloon from-left nes-pointer is-dark">
-            BTC_USDT 29/12 00:42
-        </p>
-      
-        <div class="nes-table-responsive">
-          <table class="nes-table is-bordered is-dark">
-            <tbody>
-              <tr>
+                <td><h:link value = "Start" outcome = "login" /></td>
+            </tr>
+        </table>
+        <h2>
+            <h:outputText id="actual_symbol" value="BTC_USDT"/>
+            <h:outputText id="actual_date" value="29/12 00:42"/>
+        </h2>
+        <table>
+            <tr>
                 <td>EXIT</td>
-                <td>104.532</td>
+                <td><h:outputText id="operation_exit" value="32.000"/></td>
                 <td></td>
-              </tr>
-              <tr>
+            </tr>
+            <tr>
                 <td>NOW</td>
-                <td><span class="nes-text is-error">103.225</span></td>
+                <td><h:outputText id="operation_actual_price" value="32.000"/></td>
                 <td></td>
-              </tr>
-              <tr>
+            </tr>
+            <tr>
                 <td>ENTER</td>
-                <td><span class="nes-text is-primary">102.492</span></td>
-                <td>29/12 00:42</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <button type="button" class="nes-btn is-primary">Last Operations</button>
-    </div>
+                <td><h:outputText id="operation_enter_price" value="32.000"/></td>
+                <td><h:outputText id="operation_enter_date" value="29/12 00:42"/></td>
+            </tr>
+        </table>
+    </f:view>
 </h:body>
 </html>

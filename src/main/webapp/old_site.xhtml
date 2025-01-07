@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+<h:head>
+    <title>Lorem Ipsum</title>
+    <h:outputStylesheet name="css/nes.min.css" />
+    <h:outputStylesheet name="css/style.css" />
+</h:head>
+<h:body>
+    
+    <div class="nes-container is-dark with-title">
+      
+        <div id="user">
+            <div class="nes-badge is-icon">
+                <span class="is-warning">HI:</span>
+                <span class="is-primary">POTATO</span>
+            </div>
+            <h:outputText value="#{site.date}" />
+            <h:outputText value="#{site.key}" />
+            <button type="button" class="nes-btn">Configuration</button>
+        </div>
+        
+        <div id="sell-at">
+            <div class="nes-badge is-splited">
+                <span class="is-primary">USDT</span>
+                <span class="is-success">SELL</span>
+            </div>
+            <div class="nes-badge">
+                <span class="is-warning">0.5%</span>
+            </div>
+        </div>
+        
+        <div id="objetive">
+            <div class="nes-badge is-splited">
+                <span class="is-success">OBJ:</span>
+                <span class="is-primary">1.2%</span>
+            </div>
+            <div class="nes-badge">
+                <span class="is-warning">35.000</span>
+            </div>
+        </div>
+        
+        <div id="actual">
+            <div class="nes-badge">
+                <span class="is-warning">ACTUAL</span>
+            </div>
+            <div class="nes-badge">
+                <span class="is-error">32.000</span>
+            </div>
+        </div>
+      
+        <div class="nes-table-responsive">
+          <table class="nes-table is-bordered is-dark">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Red Kl</th>
+                <th>Fall</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>BTC_USDT</td>
+                <td>5</td>
+                <td>-3.2%</td>
+                <td><i class="nes-icon youtube is-large"></i></td>
+              </tr>
+              <tr>
+                <td>BTC_USDT</td>
+                <td>5</td>
+                <td>-3.2%</td>
+                <td><i class="nes-icon youtube is-large"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <p class="nes-balloon from-left nes-pointer is-dark">
+            BTC_USDT 29/12 00:42
+        </p>
+      
+        <div class="nes-table-responsive">
+          <table class="nes-table is-bordered is-dark">
+            <tbody>
+              <tr>
+                <td>EXIT</td>
+                <td>104.532</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>NOW</td>
+                <td><span class="nes-text is-error">103.225</span></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>ENTER</td>
+                <td><span class="nes-text is-primary">102.492</span></td>
+                <td>29/12 00:42</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <button type="button" class="nes-btn is-primary">Last Operations</button>
+    </div>
+</h:body>
+</html>
