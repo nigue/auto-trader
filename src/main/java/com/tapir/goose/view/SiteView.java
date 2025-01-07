@@ -20,12 +20,14 @@ public class SiteView implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(SiteView.class);
     
-    private Boolean active;
+    private Boolean loaded;
     private String key;
     private String date;
 
     @PostConstruct
-    public void init() {
+    public void init() throws InterruptedException {
+        loaded = false;
+        Thread.sleep(3000);
         key = (String) FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()
@@ -34,21 +36,19 @@ public class SiteView implements Serializable {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         date = dateFormat.format(Calendar.getInstance().getTime());
         logger.info("Navigate to site with key: {}", key);
+        loaded = true;
+    }
+
+    public Boolean getLoaded() {
+        return loaded;
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 }
