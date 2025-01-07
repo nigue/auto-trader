@@ -56,6 +56,12 @@ public class LoginView implements Serializable {
         logger.error("step 2: get or create user");
         Thread.sleep(3000);
         logger.info("message: {}", message);
+
+        FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .put("key", message);
+
         return "site";
     }
 
