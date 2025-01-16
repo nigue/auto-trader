@@ -1,9 +1,8 @@
 package com.tapir.goose.view;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,58 +10,73 @@ import org.apache.logging.log4j.Logger;
 import java.io.Serializable;
 
 @Named("login")
-@RequestScoped
+@ViewScoped
 public class LoginView implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(LoginView.class);
 
-    private String message;
-    private Boolean condition;
+    private static final long serialVersionUID = 1L;
 
-    @PostConstruct
-    public void init() {
-        logger.info("Init Login");
-        condition = true;
-    }
+    private double progress = 0d;
+    private String message = "ready";
+    private Boolean condition = true;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Boolean getCondition() {
-        return condition;
-    }
-
-    public String action() throws InterruptedException {
+    public String longOperation() {
         if (!condition) {
-            message = "error from message";
+
             logger.error("Invalid credentials");
-            FacesMessage message = new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR,
-                    "Authentication failed error ...",
-                    "error");
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, message);
-            return null;
+
+            addMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error Message",
+                    "Message Content");
+
+            return "";
         }
-        logger.error("step 1: validate key-secret in binance");
-        logger.error("step 1.1: if key-secret are invalid show error");
-        logger.error("step 1.2: if key-secret are invalid delete user (thread)");
-        Thread.sleep(3000);
-        logger.error("step 2: get or create user");
-        Thread.sleep(3000);
-        logger.info("message: {}", message);
+        for(int i = 0; i < 100; i++)
+        {
+            // simulate a heavy operation
+            progress++;
+            message = "processing [" + i + "]";
+            logger.info(message);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        message = "completed";
 
         FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()
                 .put("key", message);
-
         return "site";
     }
 
+
+    public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().
+                addMessage(null, new FacesMessage(severity, summary, detail));
+    }
+
+    public double getProgress()
+    {
+        return progress;
+    }
+
+    public void setProgress(double progress)
+    {
+        this.progress = progress;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
 }
