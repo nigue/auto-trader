@@ -32,8 +32,6 @@
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
 
-
-
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>arya</param-value>

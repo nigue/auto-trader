@@ -8,30 +8,29 @@
 </h:head>
 <h:body>
     <h:form id="form">
-        <p:growl id="growl" showDetail="true" />
+        <p:growl id="growl" showDetail="true"/>
         <p:commandButton id="executeButton"
+                         widgetVar="executeButtonWidget"
                          update="growl"
-                         action="#{myBean.longOperation}"
+                         action="#{login.longOperation}"
                          async="true"
                          process="@form"
                          value="start import"
-                         onclick="PF('progress').start()"
-                         global="false" />
+                         onclick="PF('progress').start();PF('executeButtonWidget').disable()"
+                         global="false"/>
 
-        <br />
-
-        <p:progressBar ajax="true"
-                       widgetVar="progress"
-                       value="#{myBean.progress}"
-                       labelTemplate="{value}%"
-                       styleClass="animated"
-                       global="false" />
-
-        <br />
+        <br/>
+            <p:progressBar ajax="true"
+                           widgetVar="progress"
+                           value="#{login.progress}"
+                           labelTemplate="{value}%"
+                           styleClass="animated"
+                           global="false"/>
+        <br/>
 
         <p:outputPanel id="result"
                        autoUpdate="true">
-            <h:outputText value="#{myBean.message}" />
+            <h:outputText value="#{login.message}"/>
         </p:outputPanel>
     </h:form>
 </h:body>

@@ -32,8 +32,7 @@ public class LoginView implements Serializable {
 
             return "";
         }
-        for(int i = 0; i < 100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             // simulate a heavy operation
             progress++;
             message = "processing [" + i + "]";
@@ -60,23 +59,19 @@ public class LoginView implements Serializable {
                 addMessage(null, new FacesMessage(severity, summary, detail));
     }
 
-    public double getProgress()
-    {
+    public double getProgress() {
         return progress;
     }
 
-    public void setProgress(double progress)
-    {
+    public void setProgress(double progress) {
         this.progress = progress;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 }
