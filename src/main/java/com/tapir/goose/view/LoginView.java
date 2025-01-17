@@ -21,6 +21,9 @@ public class LoginView implements Serializable {
     private String message = "ready";
     private Boolean condition = true;
 
+    private String key;
+    private String secret;
+
     public String longOperation() {
         if (!condition) {
 
@@ -46,11 +49,16 @@ public class LoginView implements Serializable {
 
         message = "completed";
 
+        putValue("key", key);
+        putValue("secret", secret);
+        return "site";
+    }
+
+    private void putValue(String name, String value) {
         FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()
-                .put("key", message);
-        return "site";
+                .put(name, value);
     }
 
 
@@ -73,5 +81,21 @@ public class LoginView implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }
