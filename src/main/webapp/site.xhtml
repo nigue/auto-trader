@@ -4,22 +4,10 @@
       xmlns:f="jakarta.faces.core">
 <h:head>
     <title>Site</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof faces !== 'undefined' &amp;&amp; faces.ajax) {
-                console.log('El objeto faces está disponible.');
-            } else {
-                console.error('El objeto faces no está disponible.');
-            }
-        });
-    </script>
 </h:head>
 <h:body>
-    <h:graphicImage id="image"
-                    value="#{resource['images:spin-loader.gif']}"
-                    rendered="true"/>
     <f:view>
-        <h1>Hi <h:outputText id="username" value="TEST_NAME"/></h1>
+        <h1>Hi <h:outputText id="username" value="#{site.user.username()}"/></h1>
         <h:link value = "Configuration" outcome = "login" />
         <h:link value = "Last Operations" outcome = "login" />
         <h2>

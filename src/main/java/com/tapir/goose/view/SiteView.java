@@ -1,5 +1,6 @@
 package com.tapir.goose.view;
 
+import com.tapir.goose.view.pojo.UserVDO;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
@@ -20,19 +21,13 @@ public class SiteView implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(SiteView.class);
     
-    private Boolean loaded = false;
     private String key;
     private String date;
+    private UserVDO user;
 
     @PostConstruct
     public void init() {
         logger.info("Enter to Site");
-        loaded = false;
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         key = (String) FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()
@@ -41,11 +36,8 @@ public class SiteView implements Serializable {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         date = dateFormat.format(Calendar.getInstance().getTime());
         logger.info("Navigate to site with key: {}", key);
-        loaded = true;
-    }
-
-    public Boolean getLoaded() {
-        return loaded;
+        user = new UserVDO("pancracio");
+        
     }
 
     public String getKey() {
@@ -54,6 +46,10 @@ public class SiteView implements Serializable {
 
     public String getDate() {
         return date;
+    }
+
+    public UserVDO getUser() {
+        return user;
     }
 
 }
