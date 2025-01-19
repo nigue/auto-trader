@@ -18,13 +18,27 @@ public class LoginView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private double progress = 0d;
-    private String message = "ready";
     private Boolean condition = true;
 
     private String key;
     private String secret;
 
+    /*
+    Command execute
+    Process with multiple steps
+    - obtain secret and key
+    - validate with binance, response boolean valid
+        - if are invalid, throw error
+    - obtain user (sell%, obj, symbols_interval_list)
+        - if exist: get actual data of user
+        - if not exist: get new data of user
+    - get actual balance
+    - calculate state (free, in_operation)
+        - if free: symbol table with binance
+        - if in_operation: active_order, last_enter_order
+    */
     public String longOperation() {
+        progress = 0;
         if (!condition) {
 
             logger.error("Invalid credentials");
@@ -35,22 +49,31 @@ public class LoginView implements Serializable {
 
             return "";
         }
-        for (int i = 0; i < 100; i++) {
-            // simulate a heavy operation
-            progress++;
-            message = "processing [" + i + "]";
-            logger.info(message);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 10;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            
+            putValue("key", key);
+            putValue("secret", secret);
+            progress += 10;
+            logger.info("progress {}", progress);
+            
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
-        message = "completed";
-
-        putValue("key", key);
-        putValue("secret", secret);
         return "site";
     }
 
@@ -73,14 +96,6 @@ public class LoginView implements Serializable {
 
     public void setProgress(double progress) {
         this.progress = progress;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getKey() {

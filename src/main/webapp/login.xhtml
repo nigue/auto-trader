@@ -16,6 +16,7 @@
         <h5><p:outputLabel for="@next" value="Secret"/></h5>
         <p:password id="secret" value="#{login.secret}"/>
 
+        <br/>
         <p:commandButton id="executeButton"
                          widgetVar="executeButtonWidget"
                          update="growl"
@@ -25,20 +26,14 @@
                          value="start import"
                          onclick="PF('progress').start();PF('executeButtonWidget').disable()"
                          global="false"/>
-
         <br/>
-            <p:progressBar ajax="true"
-                           widgetVar="progress"
-                           value="#{login.progress}"
-                           labelTemplate="{value}%"
-                           styleClass="animated"
-                           global="false"/>
-        <br/>
-
-        <p:outputPanel id="result"
-                       autoUpdate="true">
-            <h:outputText value="#{login.message}"/>
-        </p:outputPanel>
+        <p:progressBar ajax="true"
+                       widgetVar="progress"
+                       value="#{login.progress}"
+                       labelTemplate="{value}%"
+                       interval="2000"
+                       styleClass="animated"
+                       global="false"/>
     </h:form>
 </h:body>
 </html>
