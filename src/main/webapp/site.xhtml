@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 <h:head>
     <title>Site</title>
+    <style>
+        button.ui-button {
+            margin-right: .5rem;
+        }
+    </style>
 </h:head>
 <h:body>
+    <h2>Hi <h:outputText id="username" value="#{site.user.username()}"/></h2>
+    <p:button value="Primary" />
+    <p:button value="Secondary" styleClass="ui-button-secondary" />
+    <p:divider />
+    <p:panelGrid columns="2">
+        <h:outputText value="#{site.user.market()} SELL"/>
+        <h:outputText value="#{site.user.sell()}%"/>
+
+        <h:outputText value="OBJ: 1.2%"/>
+        <h:outputText value="#{site.user.objetive()}"/>
+
+        <h:outputText value="Actual"/>
+        <h:outputText value="#{site.wallet.market()}"/>
+    </p:panelGrid>
+    <p:divider />
+    <div class="card">
+        <p:dataTable var="symbol" value="#{site.symbols}">
+            <p:column>
+                <h:outputText value="#{symbol.symbol()}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{symbol.interval()}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{symbol.red()}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{symbol.fall()}" />
+            </p:column>
+        </p:dataTable>
+    </div>
     <f:view>
         <h1>Hi <h:outputText id="username" value="#{site.user.username()}"/></h1>
         <h:link value = "Configuration" outcome = "login" />
@@ -40,7 +77,7 @@
         </table>
         <h2>
             <h:outputText id="actual_symbol" value="BTC_USDT"/>
-            <h:outputText id="actual_date" value="#{site.date}"/>
+            <h:outputText id="actual_date" value="asdf"/>
         </h2>
         <table>
             <tr>

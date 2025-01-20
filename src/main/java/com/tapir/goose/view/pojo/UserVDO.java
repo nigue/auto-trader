@@ -1,6 +1,11 @@
 package com.tapir.goose.view.pojo;
 
-public record UserVDO (String username) {
+import java.math.BigDecimal;
+
+public record UserVDO (String username,
+                       String market,
+                       BigDecimal sell,
+                       BigDecimal objetive) {
 
 
 }
