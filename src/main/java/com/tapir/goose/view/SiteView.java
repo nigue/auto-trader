@@ -35,7 +35,7 @@ public class SiteView implements Serializable {
                 .get("key");
 
         logger.info("Navigate to site with key: {}", key);
-        user = new UserVDO("pancracio", 
+        user = new UserVDO("pancracio",
                 "usdt", 
                 BigDecimal.valueOf(0.5D), 
                 BigDecimal.valueOf(35000D));

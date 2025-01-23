@@ -70,7 +70,7 @@ public class LoginView implements Serializable {
             putValue("secret", secret);
             progress += 10;
             logger.info("progress {}", progress);
-            
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

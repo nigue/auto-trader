@@ -43,59 +43,19 @@
             </p:column>
         </p:dataTable>
     </div>
-    <f:view>
-        <h1>Hi <h:outputText id="username" value="#{site.user.username()}"/></h1>
-        <h:link value = "Configuration" outcome = "login" />
-        <h:link value = "Last Operations" outcome = "login" />
-        <h2>
-            <h:outputText id="asset" value="USDT"/>
-            <h:outputText id="action" value="SELL"/>
-            <h:outputText id="sell_percent" value="0.5%"/>
-        </h2>
-        <h2>
-            <h:outputText id="def_1" value="OBJ:"/>
-            <h:outputText id="objetive_percent" value="1.2%"/>
-            <h:outputText id="objetive_amount" value="35.000"/>
-        </h2>
-        <h2>
-            <h:outputText id="def_2" value="ACTUAL"/>
-            <h:outputText id="actual_amount" value="32.000"/>
-        </h2>
-        <table>
-            <tr>
-                <th>Symbol</th>
-                <th>Red Kl</th>
-                <th>Fall</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>BTC_USDT</td>
-                <td>5</td>
-                <td>-3.2%</td>
-                <td><h:link value = "Start" outcome = "login" /></td>
-            </tr>
-        </table>
-        <h2>
-            <h:outputText id="actual_symbol" value="BTC_USDT"/>
-            <h:outputText id="actual_date" value="asdf"/>
-        </h2>
-        <table>
-            <tr>
-                <td>EXIT</td>
-                <td><h:outputText id="operation_exit" value="32.000"/></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>NOW</td>
-                <td><h:outputText id="operation_actual_price" value="32.000"/></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>ENTER</td>
-                <td><h:outputText id="operation_enter_price" value="32.000"/></td>
-                <td><h:outputText id="operation_enter_date" value="29/12 00:42"/></td>
-            </tr>
-        </table>
-    </f:view>
+    <p:divider />
+    <p:panelGrid columns="3">
+        <h:outputText value="EXIT"/>
+        <h:outputText value="#{site.wallet.exit()}"/>
+        <h:outputText value=""/>
+
+        <h:outputText value="NOW"/>
+        <h:outputText value="#{site.wallet.now()}"/>
+        <h:outputText value=""/>
+
+        <h:outputText value="ENTER"/>
+        <h:outputText value="#{site.wallet.enter()}"/>
+        <h:outputText value="#{site.wallet.date()}"/>
+    </p:panelGrid>
 </h:body>
 </html>

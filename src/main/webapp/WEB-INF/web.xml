@@ -26,10 +26,9 @@
         <param-value>resources.application</param-value>
     </context-param>
 
-
     <!-- Página de bienvenida -->
     <welcome-file-list>
-        <welcome-file>site.xhtml</welcome-file>
+        <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
 
     <context-param>
