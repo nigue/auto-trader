@@ -27,22 +27,24 @@
         <h:outputText value="#{site.wallet.market()}"/>
     </p:panelGrid>
     <p:divider />
-    <div class="card">
-        <p:dataTable var="symbol" value="#{site.symbols}">
-            <p:column>
-                <h:outputText value="#{symbol.symbol()}" />
-            </p:column>
-            <p:column>
-                <h:outputText value="#{symbol.interval()}" />
-            </p:column>
-            <p:column>
-                <h:outputText value="#{symbol.red()}" />
-            </p:column>
-            <p:column>
-                <h:outputText value="#{symbol.fall()}" />
-            </p:column>
-        </p:dataTable>
-    </div>
+    <h:panelGroup rendered="#{site.wallet.free()}">
+        <div class="card">
+            <p:dataTable var="symbol" value="#{site.symbols}">
+                <p:column>
+                    <h:outputText value="#{symbol.symbol()}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{symbol.interval()}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{symbol.red()}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{symbol.fall()}" />
+                </p:column>
+            </p:dataTable>
+        </div>
+    </h:panelGroup>
     <p:divider />
     <p:panelGrid columns="3">
         <h:outputText value="EXIT"/>

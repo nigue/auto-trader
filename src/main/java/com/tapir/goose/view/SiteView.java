@@ -39,7 +39,7 @@ public class SiteView implements Serializable {
                 "usdt", 
                 BigDecimal.valueOf(0.5D), 
                 BigDecimal.valueOf(35000D));
-        wallet = new WalletVDO(true,
+        wallet = new WalletVDO(false,
                 "usdt",
                 BigDecimal.valueOf(32000D),
                 BigDecimal.valueOf(104000D),
