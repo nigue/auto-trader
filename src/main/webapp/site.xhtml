@@ -46,18 +46,20 @@
         </div>
     </h:panelGroup>
     <p:divider />
-    <p:panelGrid columns="3">
-        <h:outputText value="EXIT"/>
-        <h:outputText value="#{site.wallet.exit()}"/>
-        <h:outputText value=""/>
+    <h:panelGroup rendered="#{!site.wallet.free()}">
+        <p:panelGrid columns="3">
+            <h:outputText value="EXIT"/>
+            <h:outputText value="#{site.wallet.exit()}"/>
+            <h:outputText value=""/>
 
-        <h:outputText value="NOW"/>
-        <h:outputText value="#{site.wallet.now()}"/>
-        <h:outputText value=""/>
+            <h:outputText value="NOW"/>
+            <h:outputText value="#{site.wallet.now()}"/>
+            <h:outputText value=""/>
 
-        <h:outputText value="ENTER"/>
-        <h:outputText value="#{site.wallet.enter()}"/>
-        <h:outputText value="#{site.wallet.date()}"/>
-    </p:panelGrid>
+            <h:outputText value="ENTER"/>
+            <h:outputText value="#{site.wallet.enter()}"/>
+            <h:outputText value="#{site.wallet.date()}"/>
+        </p:panelGrid>
+    </h:panelGroup>
 </h:body>
 </html>
