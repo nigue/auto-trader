@@ -29,7 +29,7 @@
     <p:divider />
     <h:panelGroup rendered="#{site.wallet.free()}">
         <div class="card">
-            <p:dataTable var="symbol" value="#{site.symbols}">
+            <p:dataTable var="symbol" value="#{site.symbols}" showGridlines="true">
                 <p:column>
                     <h:outputText value="#{symbol.symbol()}" />
                 </p:column>
