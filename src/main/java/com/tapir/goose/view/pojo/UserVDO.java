@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public record UserVDO (String username,
                        String market,
                        BigDecimal sell,
-                       BigDecimal objetive) {
+                       BigDecimal objective) {
 
 
 }
