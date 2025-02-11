@@ -63,7 +63,7 @@ public class SiteView implements Serializable {
     }
 
     public String enterOperation() {
-        /*progress = 0;
+        progress = 0;
         if (!condition) {
 
             logger.error("Invalid credentials");
@@ -98,7 +98,7 @@ public class SiteView implements Serializable {
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         return "login";
     }
 
