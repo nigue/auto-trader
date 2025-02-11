@@ -44,6 +44,40 @@
                 </p:column>
             </p:dataTable>
         </div>
+
+        <h:form>
+            <div class="ui-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <p:outputLabel for="@next" value="Basic"/>
+                    <p:selectOneMenu id="option" value="#{site.selectedSymbol}">
+                        <f:selectItem itemLabel="Select One" itemValue=""/>
+                        <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                        <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                        <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+
+            <p:growl id="growl" showDetail="true"/>
+            <br/>
+            <p:commandButton id="executeButton"
+                             widgetVar="executeButtonWidget"
+                             update="growl"
+                             action="#{site.enterOperation}"
+                             async="true"
+                             process="@form"
+                             value="start import"
+                             onclick="PF('progress').start();PF('executeButtonWidget').disable()"
+                             global="false"/>
+            <br/>
+            <p:progressBar ajax="true"
+                           widgetVar="progress"
+                           value="#{site.progress}"
+                           labelTemplate="{value}%"
+                           interval="2000"
+                           styleClass="animated"
+                           global="false"/>
+        </h:form>
     </h:panelGroup>
     <p:divider />
     <h:panelGroup rendered="#{!site.wallet.free()}">

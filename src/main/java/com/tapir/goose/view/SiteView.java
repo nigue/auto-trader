@@ -1,27 +1,32 @@
 package com.tapir.goose.view;
 
 import com.tapir.goose.view.pojo.BinanceVDO;
-import com.tapir.goose.view.pojo.WalletVDO;
 import com.tapir.goose.view.pojo.UserVDO;
+import com.tapir.goose.view.pojo.WalletVDO;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 @Named("site")
-@RequestScoped
+@SessionScoped
 public class SiteView implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(SiteView.class);
-    
+
+    private double progress = 0d;
+    private Boolean condition = true;
     private String key;
+    private String secret;
+    private String selectedSymbol;
     private UserVDO user;
     private WalletVDO wallet;
     private List<BinanceVDO> symbols;
@@ -33,6 +38,10 @@ public class SiteView implements Serializable {
                 .getExternalContext()
                 .getFlash()
                 .get("key");
+        secret = (String) FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .get("secret");
 
         logger.info("Navigate to site with key: {}", key);
         user = new UserVDO("pancracio",
@@ -53,6 +62,58 @@ public class SiteView implements Serializable {
         symbols = Arrays.asList(row, row);
     }
 
+    public String enterOperation() {
+        /*progress = 0;
+        if (!condition) {
+
+            logger.error("Invalid credentials");
+
+            addMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error Message",
+                    "Message Content");
+
+            return "";
+        }
+        try {
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 20;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+            progress += 10;
+            logger.info("progress {}", progress);
+            Thread.sleep(2000);
+
+            putValue("key", key);
+            putValue("secret", secret);
+            progress += 10;
+            logger.info("progress {}", progress);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }*/
+        return "login";
+    }
+
+    private void putValue(String name, String value) {
+        FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .put(name, value);
+    }
+
+    public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().
+                addMessage(null, new FacesMessage(severity, summary, detail));
+    }
+
     public UserVDO getUser() {
         return user;
     }
@@ -65,4 +126,19 @@ public class SiteView implements Serializable {
         return symbols;
     }
 
+    public String getSelectedSymbol() {
+        return selectedSymbol;
+    }
+
+    public void setSelectedSymbol(String selectedSymbol) {
+        this.selectedSymbol = selectedSymbol;
+    }
+
+    public double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
+    }
 }
