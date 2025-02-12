@@ -1,5 +1,6 @@
 package com.tapir.goose.view;
 
+import com.tapir.goose.view.pojo.UserVDO;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Named("login")
 @ViewScoped
@@ -50,6 +52,11 @@ public class LoginView implements Serializable {
             return "";
         }
         try {
+            UserVDO userVDO = new UserVDO("ricardo",
+                    "usdt",
+                    BigDecimal.valueOf(0.5D),
+                    BigDecimal.valueOf(35000D));
+            putValue("user", userVDO);
             progress += 20;
             logger.info("progress {}", progress);
             Thread.sleep(2000);
@@ -77,7 +84,7 @@ public class LoginView implements Serializable {
         return "site";
     }
 
-    private void putValue(String name, String value) {
+    private void putValue(String name, Object value) {
         FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()

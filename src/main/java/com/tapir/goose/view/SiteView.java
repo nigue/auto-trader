@@ -44,10 +44,10 @@ public class SiteView implements Serializable {
                 .get("secret");
 
         logger.info("Navigate to site with key: {}", key);
-        user = new UserVDO("pancracio",
-                "usdt", 
-                BigDecimal.valueOf(0.5D), 
-                BigDecimal.valueOf(35000D));
+        user = (UserVDO) FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .get("user");
         wallet = new WalletVDO(true,
                 "usdt",
                 BigDecimal.valueOf(32000D),
@@ -99,6 +99,7 @@ public class SiteView implements Serializable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        logger.info("navigate to login");
         return "login";
     }
 
