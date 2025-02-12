@@ -12,12 +12,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.tapir.goose.view.ViewConstants.USER;
-import static com.tapir.goose.view.ViewConstants.WALLET;
+import static com.tapir.goose.view.ViewConstants.*;
 
 @Named("site")
 @SessionScoped
@@ -49,11 +46,7 @@ public class SiteView implements Serializable {
         logger.info("Navigate to site with key: {}", key);
         user = getFlashAttribute(USER, UserVDO.class);
         wallet = getFlashAttribute(WALLET, WalletVDO.class);
-        var row = new BinanceVDO("BTC-USDT",
-                "15m",
-                5,
-                BigDecimal.valueOf(-3.12345D));
-        symbols = Arrays.asList(row, row);
+        symbols = getFlashAttributeList(SYMBOLS, BinanceVDO.class);
     }
 
     private <T> T getFlashAttribute(String key, Class<T> type) {

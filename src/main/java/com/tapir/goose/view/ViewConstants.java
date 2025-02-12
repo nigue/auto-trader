@@ -4,4 +4,5 @@ public class ViewConstants {
 
     final static String USER = "user";
     final static String WALLET = "wallet";
+    final static String SYMBOLS = "symbols";
 }

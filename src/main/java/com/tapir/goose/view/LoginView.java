@@ -1,5 +1,6 @@
 package com.tapir.goose.view;
 
+import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
 import com.tapir.goose.view.pojo.WalletVDO;
 import jakarta.faces.application.FacesMessage;
@@ -11,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 @Named("login")
 @ViewScoped
@@ -66,6 +69,12 @@ public class LoginView implements Serializable {
                     BigDecimal.valueOf(102000D),
                     "29/12 00:42");
             putValue("wallet", walletVDO);
+            var row = new BinanceVDO("BTC-USDT",
+                    "15m",
+                    5,
+                    BigDecimal.valueOf(-3.12345D));
+            List<BinanceVDO> symbols = Arrays.asList(row, row);
+            putValue("symbols", symbols);
             progress += 20;
             logger.info("progress {}", progress);
             Thread.sleep(2000);
