@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.tapir.goose.view.ViewConstants.USER;
+import static com.tapir.goose.view.ViewConstants.WALLET;
+
 @Named("site")
 @SessionScoped
 public class SiteView implements Serializable {
@@ -44,22 +47,37 @@ public class SiteView implements Serializable {
                 .get("secret");
 
         logger.info("Navigate to site with key: {}", key);
-        user = (UserVDO) FacesContext.getCurrentInstance()
-                .getExternalContext()
-                .getFlash()
-                .get("user");
-        wallet = new WalletVDO(true,
-                "usdt",
-                BigDecimal.valueOf(32000D),
-                BigDecimal.valueOf(104000D),
-                BigDecimal.valueOf(103000D),
-                BigDecimal.valueOf(102000D),
-                "29/12 00:42");
+        user = getFlashAttribute(USER, UserVDO.class);
+        wallet = getFlashAttribute(WALLET, WalletVDO.class);
         var row = new BinanceVDO("BTC-USDT",
                 "15m",
                 5,
                 BigDecimal.valueOf(-3.12345D));
         symbols = Arrays.asList(row, row);
+    }
+
+    private <T> T getFlashAttribute(String key, Class<T> type) {
+        Object value = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .get(key);
+        return type.isInstance(value) ? type.cast(value) : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> List<T> getFlashAttributeList(String key, Class<T> type) {
+        Object value = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getFlash()
+                .get(key);
+
+        if (value instanceof List<?>) {
+            List<?> list = (List<?>) value;
+            if (!list.isEmpty() && type.isInstance(list.get(0))) {
+                return (List<T>) list;
+            }
+        }
+        return null;
     }
 
     public String enterOperation() {

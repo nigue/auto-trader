@@ -1,6 +1,7 @@
 package com.tapir.goose.view;
 
 import com.tapir.goose.view.pojo.UserVDO;
+import com.tapir.goose.view.pojo.WalletVDO;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -52,11 +53,19 @@ public class LoginView implements Serializable {
             return "";
         }
         try {
-            UserVDO userVDO = new UserVDO("ricardo",
+            UserVDO userVDO = new UserVDO("juanino",
                     "usdt",
                     BigDecimal.valueOf(0.5D),
                     BigDecimal.valueOf(35000D));
             putValue("user", userVDO);
+            WalletVDO walletVDO = new WalletVDO(true,
+                    "usdt",
+                    BigDecimal.valueOf(32000D),
+                    BigDecimal.valueOf(104000D),
+                    BigDecimal.valueOf(103000D),
+                    BigDecimal.valueOf(102000D),
+                    "29/12 00:42");
+            putValue("wallet", walletVDO);
             progress += 20;
             logger.info("progress {}", progress);
             Thread.sleep(2000);
