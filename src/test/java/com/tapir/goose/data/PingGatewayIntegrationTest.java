@@ -18,7 +18,7 @@ class PingGatewayIntegrationTest {
     @Test
     @DisplayName("Binance ping")
     void test() {
-        var fetch = gateway.fetch();
-        assertNotNull(fetch);
+        var dto = gateway.fetch();
+        assertNotNull(dto);
     }
 }

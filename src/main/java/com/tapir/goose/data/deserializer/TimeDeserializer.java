@@ -13,6 +13,15 @@ public class TimeDeserializer implements JsonbDeserializer<TimeDTO> {
     public TimeDTO deserialize(JsonParser jsonParser,
                                DeserializationContext deserializationContext,
                                Type type) {
-        return new TimeDTO("asfd");
+        long serverTime = 0L;
+        while (jsonParser.hasNext()) {
+            var event = jsonParser.next();
+            if (event == JsonParser.Event.KEY_NAME &&
+                    "serverTime".equals(jsonParser.getString())) {
+                jsonParser.next();
+                serverTime = jsonParser.getLong();
+            }
+        }
+        return new TimeDTO(serverTime);
     }
 }
