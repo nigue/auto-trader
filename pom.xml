@@ -45,6 +45,12 @@
             <artifactId>jersey-client</artifactId>
             <version>3.1.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>3.0.3</version>
+            <scope>runtime</scope>
+        </dependency>
         
         <!-- Log4j2 Core -->
         <dependency>

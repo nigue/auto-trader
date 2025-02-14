@@ -6,18 +6,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+class PingGatewayIntegrationTest {
 
-class TimeGatewayIntegrationTest {
-
-    private TimeGateway gateway;
+    private PingGateway gateway;
 
     @BeforeEach
     void init() {
-        gateway = new TimeGateway();
+        gateway = new PingGateway();
     }
 
     @Test
-    @DisplayName("Binance time")
+    @DisplayName("Binance ping")
     void test() {
         var fetch = gateway.fetch();
         assertNotNull(fetch);

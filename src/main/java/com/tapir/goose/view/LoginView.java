@@ -26,8 +26,8 @@ public class LoginView implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    private PingGateway pingGateway;
+    //@Inject
+    //private PingGateway pingGateway;
 
     private double progress = 0d;
     private Boolean condition = true;
@@ -62,8 +62,8 @@ public class LoginView implements Serializable {
             return "";
         }
         try {
-            var data = pingGateway.fetch();
-            logger.info("data: {}", data);
+            //var data = pingGateway.fetch();
+            //logger.info("data: {}", data);
 
             UserVDO userVDO = new UserVDO("juanino",
                     "usdt",
