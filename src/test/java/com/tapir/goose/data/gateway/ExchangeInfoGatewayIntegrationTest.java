@@ -22,5 +22,6 @@ class ExchangeInfoGatewayIntegrationTest {
         var dto = gateway.fetch("btcusdt");
         assertNotEquals("", dto.timeZone());
         assertNotEquals(0L, dto.serverTime());
+        assertNotEquals(0, dto.rateLimits().size());
     }
 }
