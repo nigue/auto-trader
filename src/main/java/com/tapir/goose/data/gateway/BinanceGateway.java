@@ -1,5 +1,6 @@
-package com.tapir.goose.data;
+package com.tapir.goose.data.gateway;
 
+import com.tapir.goose.data.deserializer.ExchangeInfoDeserializer;
 import com.tapir.goose.data.deserializer.PingDeserializer;
 import com.tapir.goose.data.deserializer.TimeDeserializer;
 import jakarta.json.bind.Jsonb;
@@ -27,17 +28,24 @@ public abstract class BinanceGateway<T> {
         this.url = base.concat(path);
         var config = new JsonbConfig().withDeserializers(
                 new TimeDeserializer(),
-                new PingDeserializer());
+                new PingDeserializer(),
+                new ExchangeInfoDeserializer());
         this.jsonb = JsonbBuilder.create(config);
     }
 
-    protected T fetch() {
+    T fetch() {
         return fetch(Map.of());
     }
 
-    protected T fetch(Map<String, String> params) {
+    T fetch(Map<String, String> map) {
+        String params = map.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .reduce((left, right) -> left + "&" + right)
+                .map(result -> "?" + result)
+                .orElse("");
+
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
+        WebTarget target = client.target(url.concat(params));
 
         Invocation.Builder request = target.request(MediaType.APPLICATION_JSON);
         Response response = request.get();
@@ -45,7 +53,6 @@ public abstract class BinanceGateway<T> {
         T result = jsonb.fromJson(json, getGenericType());
 
         client.close();
-
         return result;
     }
 

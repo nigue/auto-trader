@@ -1,14 +1,11 @@
 package com.tapir.goose.view;
 
-import com.tapir.goose.data.PingGateway;
 import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
 import com.tapir.goose.view.pojo.WalletVDO;
-import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

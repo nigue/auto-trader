@@ -1,4 +1,4 @@
-package com.tapir.goose.data;
+package com.tapir.goose.data.gateway;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
