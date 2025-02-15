@@ -15,6 +15,9 @@ public class RateLimitDeserializer implements JsonbDeserializer<RateLimitDTO> {
                                     Type type) {
         String key = null;
         String rateLimitType = "";
+        String interval = "";
+        int intervalNum = 0;
+        int limit = 0;
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -23,11 +26,25 @@ public class RateLimitDeserializer implements JsonbDeserializer<RateLimitDTO> {
                     if ("rateLimitType".equals(key)) {
                         rateLimitType = parser.getString();
                     }
+                    if ("interval".equals(key)) {
+                        interval = parser.getString();
+                    }
+                }
+                case VALUE_NUMBER -> {
+                    if ("intervalNum".equals(key)) {
+                        intervalNum = parser.getInt();
+                    }
+                    if ("limit".equals(key)) {
+                        limit = parser.getInt();
+                    }
                 }
                 default -> {
                 }
             }
         }
-        return new RateLimitDTO(rateLimitType);
+        return new RateLimitDTO(rateLimitType,
+                interval,
+                intervalNum,
+                limit);
     }
 }
