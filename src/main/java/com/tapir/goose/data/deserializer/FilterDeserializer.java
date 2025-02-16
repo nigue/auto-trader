@@ -32,6 +32,12 @@ public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
         String askMultiplierUp = "";
         String askMultiplierDown = "";
         Integer avgPriceMins = 0;
+        BigDecimal minNotional = BigDecimal.ZERO;
+        Boolean applyMinToMarket = null;
+        BigDecimal maxNotional = BigDecimal.ZERO;
+        Boolean applyMaxToMarket = null;
+        Integer maxNumOrders = 0;
+        Integer maxNumAlgoOrders = 0;
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -70,6 +76,12 @@ public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
                     if ("askMultiplierDown".equals(key)) {
                         askMultiplierDown = parser.getString();
                     }
+                    if ("minNotional".equals(key)) {
+                        minNotional = new BigDecimal(parser.getString());
+                    }
+                    if ("maxNotional".equals(key)) {
+                        maxNotional = new BigDecimal(parser.getString());
+                    }
                 }
                 case VALUE_NUMBER -> {
                     if ("limit".equals(key)) {
@@ -89,6 +101,20 @@ public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
                     }
                     if ("avgPriceMins".equals(key)) {
                         avgPriceMins = parser.getInt();
+                    }
+                    if ("maxNumOrders".equals(key)) {
+                        maxNumOrders = parser.getInt();
+                    }
+                    if ("maxNumAlgoOrders".equals(key)) {
+                        maxNumAlgoOrders = parser.getInt();
+                    }
+                }
+                case VALUE_TRUE, VALUE_FALSE -> {
+                    if ("applyMinToMarket".equals(key)) {
+                        applyMinToMarket = parser.getString().equals("true");
+                    }
+                    if ("applyMaxToMarket".equals(key)) {
+                        applyMaxToMarket = parser.getString().equals("true");
                     }
                 }
                 default -> {
@@ -111,6 +137,12 @@ public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
                 bidMultiplierDown,
                 askMultiplierUp,
                 askMultiplierDown,
-                avgPriceMins);
+                avgPriceMins,
+                minNotional,
+                applyMinToMarket,
+                maxNotional,
+                applyMaxToMarket,
+                maxNumOrders,
+                maxNumAlgoOrders);
     }
 }

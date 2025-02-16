@@ -19,6 +19,12 @@ public record FilterDTO(
         String bidMultiplierDown,
         String askMultiplierUp,
         String askMultiplierDown,
-        Integer avgPriceMins
+        Integer avgPriceMins,
+        BigDecimal minNotional,
+        Boolean applyMinToMarket,
+        BigDecimal maxNotional,
+        Boolean applyMaxToMarket,
+        Integer maxNumOrders,
+        Integer maxNumAlgoOrders
 ) {
 }
