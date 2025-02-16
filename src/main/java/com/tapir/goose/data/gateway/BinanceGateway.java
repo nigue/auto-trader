@@ -2,6 +2,7 @@ package com.tapir.goose.data.gateway;
 
 import com.tapir.goose.data.deserializer.ExchangeInfoDeserializer;
 import com.tapir.goose.data.deserializer.PingDeserializer;
+import com.tapir.goose.data.deserializer.PriceDeserializer;
 import com.tapir.goose.data.deserializer.TimeDeserializer;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -29,7 +30,8 @@ public abstract class BinanceGateway<T> {
         var config = new JsonbConfig().withDeserializers(
                 new TimeDeserializer(),
                 new PingDeserializer(),
-                new ExchangeInfoDeserializer());
+                new ExchangeInfoDeserializer(),
+                new PriceDeserializer());
         this.jsonb = JsonbBuilder.create(config);
     }
 
