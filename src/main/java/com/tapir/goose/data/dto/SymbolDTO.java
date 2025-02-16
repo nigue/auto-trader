@@ -14,6 +14,7 @@ public record SymbolDTO(
         Integer baseCommissionPrecision,
         Integer quoteCommissionPrecision,
 
-        List<String> orderTypes
+        List<String> orderTypes,
+        Boolean icebergAllowed
 ) {
 }

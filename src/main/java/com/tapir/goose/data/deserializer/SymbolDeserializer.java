@@ -27,6 +27,7 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
         int baseCommissionPrecision = 0;
         int quoteCommissionPrecision = 0;
         List<String> orderTypes = new ArrayList<>();
+        Boolean icebergAllowed = null;
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -62,6 +63,11 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                         quoteAssetPrecision = parser.getInt();
                     }
                 }
+                case VALUE_FALSE, VALUE_TRUE -> {
+                    if ("icebergAllowed".equals(key)) {
+                        icebergAllowed = parser.getString().equals("true");
+                    }
+                }
                 case START_ARRAY -> {
                     if ("orderTypes".equals(key)) {
                         while (parser.hasNext() && parser.next() != JsonParser.Event.END_ARRAY) {
@@ -82,6 +88,7 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                 quoteAssetPrecision,
                 baseCommissionPrecision,
                 quoteCommissionPrecision,
-                orderTypes);
+                orderTypes,
+                icebergAllowed);
     }
 }
