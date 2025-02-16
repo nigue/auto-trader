@@ -19,7 +19,7 @@ class ExchangeInfoGatewayIntegrationTest {
     @Test
     @DisplayName("Binance exchange info")
     void test() {
-        var dto = gateway.fetch("btcusdt");
+        var dto = gateway.get("btcusdt");
         assertNotEquals("", dto.timeZone());
         assertNotEquals(0L, dto.serverTime());
         assertNotEquals(0, dto.rateLimits().size());

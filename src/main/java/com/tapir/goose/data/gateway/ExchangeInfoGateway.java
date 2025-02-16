@@ -13,7 +13,7 @@ public class ExchangeInfoGateway extends BinanceGateway<ExchangeInfoDTO> {
         super("/exchangeInfo");
     }
 
-    public ExchangeInfoDTO fetch(String symbol) {
+    public ExchangeInfoDTO get(String symbol) {
         String value = symbol.toUpperCase(Locale.ROOT);
         Map<String, String> map = Map.of("symbol", value,
                 "showPermissionSets", "false");

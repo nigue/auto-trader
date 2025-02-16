@@ -10,7 +10,7 @@ public class PingGateway extends BinanceGateway<PingDTO> {
         super("/ping");
     }
 
-    public PingDTO fetch() {
+    public PingDTO alive() {
         return super.fetch();
     }
 }

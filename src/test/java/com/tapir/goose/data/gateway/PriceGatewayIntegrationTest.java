@@ -20,7 +20,7 @@ class PriceGatewayIntegrationTest {
     @Test
     @DisplayName("Binance price")
     void test() {
-        var dto = gateway.fetch("btcusdt");
+        var dto = gateway.get("btcusdt");
         assertNotEquals("", dto.symbol());
         assertNotEquals(BigDecimal.ZERO, dto.price());
     }

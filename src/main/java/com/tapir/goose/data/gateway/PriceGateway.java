@@ -13,7 +13,7 @@ public class PriceGateway extends BinanceGateway<PriceDTO> {
         super("/ticker/price");
     }
 
-    public PriceDTO fetch(String symbol) {
+    public PriceDTO get(String symbol) {
         String value = symbol.toUpperCase(Locale.ROOT);
         Map<String, String> map = Map.of("symbol", value);
         return super.fetch(map);

@@ -19,7 +19,7 @@ class TimeGatewayIntegrationTest {
     @Test
     @DisplayName("Binance time")
     void test() {
-        var dto = gateway.fetch();
+        var dto = gateway.get();
         assertNotEquals(0L, dto.serverTime());
     }
 }

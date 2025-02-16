@@ -10,7 +10,7 @@ public class TimeGateway extends BinanceGateway<TimeDTO> {
         super("/time");
     }
 
-    public TimeDTO fetch() {
+    public TimeDTO get() {
         return super.fetch();
     }
 }
