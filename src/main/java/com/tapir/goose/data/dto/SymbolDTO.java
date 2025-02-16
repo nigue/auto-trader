@@ -22,6 +22,8 @@ public record SymbolDTO(
         Boolean cancelReplaceAllowed,
         Boolean isSpotTradingAllowed,
         Boolean isMarginTradingAllowed,
-        List<FilterDTO> filters
+        List<FilterDTO> filters,
+        String defaultSelfTradePreventionMode,
+        List<String> allowedSelfTradePreventionModes
 ) {
 }

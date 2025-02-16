@@ -36,6 +36,8 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
         Boolean isSpotTradingAllowed = null;
         Boolean isMarginTradingAllowed = null;
         List<FilterDTO> filters = new ArrayList<>();
+        String defaultSelfTradePreventionMode = "";
+        List<String> allowedSelfTradePreventionModes = new ArrayList<>();
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -52,6 +54,9 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                     }
                     if ("quoteAsset".equals(key)) {
                         quoteAsset = parser.getString();
+                    }
+                    if ("defaultSelfTradePreventionMode".equals(key)) {
+                        defaultSelfTradePreventionMode = parser.getString();
                     }
                 }
                 case VALUE_NUMBER -> {
@@ -108,6 +113,11 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                             filters.add(ctx.deserialize(FilterDTO.class, parser));
                         }
                     }
+                    if ("allowedSelfTradePreventionModes".equals(key)) {
+                        while (parser.hasNext() && parser.next() != JsonParser.Event.END_ARRAY) {
+                            allowedSelfTradePreventionModes.add(ctx.deserialize(String.class, parser));
+                        }
+                    }
                 }
                 default -> {
                 }
@@ -131,6 +141,8 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                 cancelReplaceAllowed,
                 isSpotTradingAllowed,
                 isMarginTradingAllowed,
-                filters);
+                filters,
+                defaultSelfTradePreventionMode,
+                allowedSelfTradePreventionModes);
     }
 }
