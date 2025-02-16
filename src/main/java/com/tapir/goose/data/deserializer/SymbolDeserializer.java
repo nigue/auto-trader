@@ -1,6 +1,6 @@
 package com.tapir.goose.data.deserializer;
 
-import com.tapir.goose.data.dto.RateLimitDTO;
+import com.tapir.goose.data.dto.FilterDTO;
 import com.tapir.goose.data.dto.SymbolDTO;
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
@@ -35,6 +35,7 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
         Boolean cancelReplaceAllowed = null;
         Boolean isSpotTradingAllowed = null;
         Boolean isMarginTradingAllowed = null;
+        List<FilterDTO> filters = new ArrayList<>();
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -102,6 +103,11 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                             orderTypes.add(ctx.deserialize(String.class, parser));
                         }
                     }
+                    if ("filters".equals(key)) {
+                        while (parser.hasNext() && parser.next() != JsonParser.Event.END_ARRAY) {
+                            filters.add(ctx.deserialize(FilterDTO.class, parser));
+                        }
+                    }
                 }
                 default -> {
                 }
@@ -124,6 +130,7 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                 allowTrailingStop,
                 cancelReplaceAllowed,
                 isSpotTradingAllowed,
-                isMarginTradingAllowed);
+                isMarginTradingAllowed,
+                filters);
     }
 }

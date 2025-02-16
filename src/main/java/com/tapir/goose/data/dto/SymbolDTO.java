@@ -1,6 +1,5 @@
 package com.tapir.goose.data.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public record SymbolDTO(
@@ -22,6 +21,7 @@ public record SymbolDTO(
         Boolean allowTrailingStop,
         Boolean cancelReplaceAllowed,
         Boolean isSpotTradingAllowed,
-        Boolean isMarginTradingAllowed
+        Boolean isMarginTradingAllowed,
+        List<FilterDTO> filters
 ) {
 }
