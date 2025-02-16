@@ -28,6 +28,13 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
         int quoteCommissionPrecision = 0;
         List<String> orderTypes = new ArrayList<>();
         Boolean icebergAllowed = null;
+        Boolean ocoAllowed = null;
+        Boolean otoAllowed = null;
+        Boolean quoteOrderQtyMarketAllowed = null;
+        Boolean allowTrailingStop = null;
+        Boolean cancelReplaceAllowed = null;
+        Boolean isSpotTradingAllowed = null;
+        Boolean isMarginTradingAllowed = null;
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -67,6 +74,27 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                     if ("icebergAllowed".equals(key)) {
                         icebergAllowed = parser.getString().equals("true");
                     }
+                    if ("ocoAllowed".equals(key)) {
+                        ocoAllowed = parser.getString().equals("true");
+                    }
+                    if ("otoAllowed".equals(key)) {
+                        otoAllowed = parser.getString().equals("true");
+                    }
+                    if ("quoteOrderQtyMarketAllowed".equals(key)) {
+                        quoteOrderQtyMarketAllowed = parser.getString().equals("true");
+                    }
+                    if ("allowTrailingStop".equals(key)) {
+                        allowTrailingStop = parser.getString().equals("true");
+                    }
+                    if ("cancelReplaceAllowed".equals(key)) {
+                        cancelReplaceAllowed = parser.getString().equals("true");
+                    }
+                    if ("isSpotTradingAllowed".equals(key)) {
+                        isSpotTradingAllowed = parser.getString().equals("true");
+                    }
+                    if ("isMarginTradingAllowed".equals(key)) {
+                        isMarginTradingAllowed = parser.getString().equals("true");
+                    }
                 }
                 case START_ARRAY -> {
                     if ("orderTypes".equals(key)) {
@@ -89,6 +117,13 @@ public class SymbolDeserializer implements JsonbDeserializer<SymbolDTO> {
                 baseCommissionPrecision,
                 quoteCommissionPrecision,
                 orderTypes,
-                icebergAllowed);
+                icebergAllowed,
+                ocoAllowed,
+                otoAllowed,
+                quoteOrderQtyMarketAllowed,
+                allowTrailingStop,
+                cancelReplaceAllowed,
+                isSpotTradingAllowed,
+                isMarginTradingAllowed);
     }
 }

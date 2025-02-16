@@ -15,6 +15,13 @@ public record SymbolDTO(
         Integer quoteCommissionPrecision,
 
         List<String> orderTypes,
-        Boolean icebergAllowed
+        Boolean icebergAllowed,
+        Boolean ocoAllowed,
+        Boolean otoAllowed,
+        Boolean quoteOrderQtyMarketAllowed,
+        Boolean allowTrailingStop,
+        Boolean cancelReplaceAllowed,
+        Boolean isSpotTradingAllowed,
+        Boolean isMarginTradingAllowed
 ) {
 }
