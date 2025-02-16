@@ -23,5 +23,6 @@ class ExchangeInfoGatewayIntegrationTest {
         assertNotEquals("", dto.timeZone());
         assertNotEquals(0L, dto.serverTime());
         assertNotEquals(0, dto.rateLimits().size());
+        assertNotEquals(0, dto.symbols().size());
     }
 }

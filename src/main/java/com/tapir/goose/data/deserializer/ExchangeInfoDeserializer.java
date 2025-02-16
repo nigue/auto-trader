@@ -2,6 +2,7 @@ package com.tapir.goose.data.deserializer;
 
 import com.tapir.goose.data.dto.ExchangeInfoDTO;
 import com.tapir.goose.data.dto.RateLimitDTO;
+import com.tapir.goose.data.dto.SymbolDTO;
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.stream.JsonParser;
@@ -20,6 +21,7 @@ public class ExchangeInfoDeserializer implements JsonbDeserializer<ExchangeInfoD
         String timeZone = "";
         long serverTime = 0L;
         List<RateLimitDTO> rateLimits = new ArrayList<>();
+        List<SymbolDTO> symbols = new ArrayList<>();
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -40,6 +42,11 @@ public class ExchangeInfoDeserializer implements JsonbDeserializer<ExchangeInfoD
                             rateLimits.add(ctx.deserialize(RateLimitDTO.class, parser));
                         }
                     }
+                    if ("symbols".equals(key)) {
+                        while (parser.hasNext() && parser.next() != JsonParser.Event.END_ARRAY) {
+                            symbols.add(ctx.deserialize(SymbolDTO.class, parser));
+                        }
+                    }
                 }
                 default -> {
                 }
@@ -47,6 +54,7 @@ public class ExchangeInfoDeserializer implements JsonbDeserializer<ExchangeInfoD
         }
         return new ExchangeInfoDTO(timeZone,
                 serverTime,
-                rateLimits);
+                rateLimits,
+                symbols);
     }
 }
