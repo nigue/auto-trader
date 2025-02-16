@@ -1,14 +1,12 @@
 package com.tapir.goose.data.deserializer;
 
 import com.tapir.goose.data.dto.FilterDTO;
-import com.tapir.goose.data.dto.SymbolDTO;
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.stream.JsonParser;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
 
@@ -18,6 +16,9 @@ public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
                                  Type type) {
         String key = null;
         String filterType = "";
+        BigDecimal minPrice = BigDecimal.ZERO;
+        BigDecimal maxPrice = BigDecimal.ZERO;
+        BigDecimal tickSize = BigDecimal.ZERO;
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             switch (event) {
@@ -26,13 +27,23 @@ public class FilterDeserializer implements JsonbDeserializer<FilterDTO> {
                     if ("filterType".equals(key)) {
                         filterType = parser.getString();
                     }
-                }
-                case VALUE_NUMBER -> {
+                    if ("minPrice".equals(key)) {
+                        minPrice = new BigDecimal(parser.getString());
+                    }
+                    if ("maxPrice".equals(key)) {
+                        maxPrice = new BigDecimal(parser.getString());
+                    }
+                    if ("tickSize".equals(key)) {
+                        tickSize = new BigDecimal(parser.getString());
+                    }
                 }
                 default -> {
                 }
             }
         }
-        return new FilterDTO(filterType);
+        return new FilterDTO(filterType,
+                minPrice,
+                maxPrice,
+                tickSize);
     }
 }
