@@ -1,124 +1,66 @@
 {
-  "timezone": "UTC",
-  "serverTime": 1739545720059,
-  "rateLimits": [
+  "makerCommission": 10,
+  "takerCommission": 10,
+  "buyerCommission": 0,
+  "sellerCommission": 0,
+  "commissionRates": {
+    "maker": "0.00100000",
+    "taker": "0.00100000",
+    "buyer": "0.00000000",
+    "seller": "0.00000000"
+  },
+  "canTrade": true,
+  "canWithdraw": true,
+  "canDeposit": true,
+  "brokered": false,
+  "requireSelfTradePrevention": false,
+  "preventSor": false,
+  "updateTime": 1737537858859,
+  "accountType": "SPOT",
+  "balances": [
     {
-      "rateLimitType": "REQUEST_WEIGHT",
-      "interval": "MINUTE",
-      "intervalNum": 1,
-      "limit": 6000
+      "asset": "BTC",
+      "free": "0.00000187",
+      "locked": "0.00000000"
     },
     {
-      "rateLimitType": "ORDERS",
-      "interval": "SECOND",
-      "intervalNum": 10,
-      "limit": 100
+      "asset": "LTC",
+      "free": "0.00049200",
+      "locked": "0.00000000"
     },
     {
-      "rateLimitType": "ORDERS",
-      "interval": "DAY",
-      "intervalNum": 1,
-      "limit": 200000
+      "asset": "ETH",
+      "free": "0.00002301",
+      "locked": "0.00000000"
     },
     {
-      "rateLimitType": "RAW_REQUESTS",
-      "interval": "MINUTE",
-      "intervalNum": 5,
-      "limit": 61000
+      "asset": "BNB",
+      "free": "0.00009196",
+      "locked": "0.00000000"
+    },
+    {
+      "asset": "USDT",
+      "free": "26245.09671136",
+      "locked": "0.00000000"
+    },
+    {
+      "asset": "ADA",
+      "free": "0.09420000",
+      "locked": "0.00000000"
+    },
+    {
+      "asset": "SOL",
+      "free": "0.00078880",
+      "locked": "0.00000000"
+    },
+    {
+      "asset": "FDUSD",
+      "free": "0.04508773",
+      "locked": "0.00000000"
     }
   ],
-  "exchangeFilters": [],
-  "symbols": [
-    {
-      "symbol": "BNBBTC",
-      "status": "TRADING",
-      "baseAsset": "BNB",
-      "baseAssetPrecision": 8,
-      "quoteAsset": "BTC",
-      "quotePrecision": 8,
-      "quoteAssetPrecision": 8,
-      "baseCommissionPrecision": 8,
-      "quoteCommissionPrecision": 8,
-      "orderTypes": [
-        "LIMIT",
-        "LIMIT_MAKER",
-        "MARKET",
-        "STOP_LOSS",
-        "STOP_LOSS_LIMIT",
-        "TAKE_PROFIT",
-        "TAKE_PROFIT_LIMIT"
-      ],
-      "icebergAllowed": true,
-      "ocoAllowed": true,
-      "otoAllowed": true,
-      "quoteOrderQtyMarketAllowed": true,
-      "allowTrailingStop": true,
-      "cancelReplaceAllowed": true,
-      "isSpotTradingAllowed": true,
-      "isMarginTradingAllowed": true,
-      "filters": [
-        {
-          "filterType": "PRICE_FILTER",
-          "minPrice": "0.00000100",
-          "maxPrice": "100000.00000000",
-          "tickSize": "0.00000100"
-        },
-        {
-          "filterType": "LOT_SIZE",
-          "minQty": "0.00100000",
-          "maxQty": "100000.00000000",
-          "stepSize": "0.00100000"
-        },
-        {
-          "filterType": "ICEBERG_PARTS",
-          "limit": 10
-        },
-        {
-          "filterType": "MARKET_LOT_SIZE",
-          "minQty": "0.00000000",
-          "maxQty": "2091.75396250",
-          "stepSize": "0.00000000"
-        },
-        {
-          "filterType": "TRAILING_DELTA",
-          "minTrailingAboveDelta": 10,
-          "maxTrailingAboveDelta": 2000,
-          "minTrailingBelowDelta": 10,
-          "maxTrailingBelowDelta": 2000
-        },
-        {
-          "filterType": "PERCENT_PRICE_BY_SIDE",
-          "bidMultiplierUp": "5",
-          "bidMultiplierDown": "0.2",
-          "askMultiplierUp": "5",
-          "askMultiplierDown": "0.2",
-          "avgPriceMins": 5
-        },
-        {
-          "filterType": "NOTIONAL",
-          "minNotional": "0.00010000",
-          "applyMinToMarket": true,
-          "maxNotional": "9000000.00000000",
-          "applyMaxToMarket": false,
-          "avgPriceMins": 5
-        },
-        {
-          "filterType": "MAX_NUM_ORDERS",
-          "maxNumOrders": 200
-        },
-        {
-          "filterType": "MAX_NUM_ALGO_ORDERS",
-          "maxNumAlgoOrders": 5
-        }
-      ],
-      "permissions": [],
-      "permissionSets": [],
-      "defaultSelfTradePreventionMode": "EXPIRE_MAKER",
-      "allowedSelfTradePreventionModes": [
-        "EXPIRE_TAKER",
-        "EXPIRE_MAKER",
-        "EXPIRE_BOTH"
-      ]
-    }
-  ]
+  "permissions": [
+    "TRD_GRP_076"
+  ],
+  "uid": 12819773
 }

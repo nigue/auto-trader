@@ -17,7 +17,7 @@ class KlineGatewayIntegrationTest {
     }
 
     @Test
-    @DisplayName("Binance exchange info")
+    @DisplayName("Binance kilnes")
     void test() {
         var dto = gateway.findAll("btcusdt", Interval.FIVE_MINUTES, 2);
         assertEquals(2, dto.size());
