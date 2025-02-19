@@ -1,11 +1,14 @@
 package com.tapir.goose.view;
 
+import com.tapir.goose.data.dto.LoginDTO;
+import com.tapir.goose.service.UserDataService;
 import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
 import com.tapir.goose.view.pojo.WalletVDO;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,8 +26,8 @@ public class LoginView implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //@Inject
-    //private PingGateway pingGateway;
+    @Inject
+    private UserDataService userDataService;
 
     private double progress = 0d;
     private Boolean condition = true;
@@ -59,14 +62,7 @@ public class LoginView implements Serializable {
             return "";
         }
         try {
-            //var data = pingGateway.fetch();
-            //logger.info("data: {}", data);
 
-            UserVDO userVDO = new UserVDO("juanino",
-                    "usdt",
-                    BigDecimal.valueOf(0.5D),
-                    BigDecimal.valueOf(35000D));
-            putValue("user", userVDO);
             WalletVDO walletVDO = new WalletVDO(true,
                     "usdt",
                     BigDecimal.valueOf(32000D),
@@ -81,6 +77,11 @@ public class LoginView implements Serializable {
                     BigDecimal.valueOf(-3.12345D));
             List<BinanceVDO> symbols = Arrays.asList(row, row);
             putValue("symbols", symbols);
+
+
+            LoginDTO login = new LoginDTO(key, secret);
+            UserVDO userVDO = userDataService.process(login);
+            putValue("user", userVDO);
             progress += 20;
             logger.info("progress {}", progress);
             Thread.sleep(2000);

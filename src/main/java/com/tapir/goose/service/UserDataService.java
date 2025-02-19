@@ -1,0 +1,42 @@
+package com.tapir.goose.service;
+
+import com.tapir.goose.data.dto.BalanceDTO;
+import com.tapir.goose.data.dto.LoginDTO;
+import com.tapir.goose.data.gateway.AccountGateway;
+import com.tapir.goose.view.pojo.UserVDO;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@ApplicationScoped
+public class UserDataService {
+
+    @Inject
+    private AccountGateway accountGateway;
+
+    public UserVDO process(LoginDTO login) {
+        List<BalanceDTO> balances = accountGateway.get(login)
+                .balances();
+        BigDecimal usdt = balances.stream()
+                .filter(it -> it.asset().equalsIgnoreCase("usdt"))
+                .findFirst()
+                .get()
+                .free();
+        BigDecimal objective = BigDecimal.ZERO;
+        BigDecimal step;
+        if (usdt.compareTo(BigDecimal.valueOf(9999L)) > 0) {
+            step = BigDecimal.valueOf(500L);
+        } else {
+            step = BigDecimal.valueOf(5L);
+        }
+        while (usdt.compareTo(objective) > 0) {
+            objective = objective.add(step);
+        }
+        return new UserVDO("Username",
+                "usdt",
+                BigDecimal.valueOf(0.5D),
+                objective);
+    }
+}
