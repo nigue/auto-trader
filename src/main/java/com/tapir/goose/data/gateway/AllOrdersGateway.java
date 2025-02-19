@@ -1,8 +1,12 @@
 package com.tapir.goose.data.gateway;
 
 import com.tapir.goose.data.deserializer.AccountDeserializer;
-import com.tapir.goose.data.deserializer.OrderAckDeserializer;
-import com.tapir.goose.data.dto.*;
+import com.tapir.goose.data.deserializer.OrderDeserializer;
+import com.tapir.goose.data.deserializer.OrdersDeserializer;
+import com.tapir.goose.data.dto.AccountDTO;
+import com.tapir.goose.data.dto.LoginDTO;
+import com.tapir.goose.data.dto.OrderDTO;
+import com.tapir.goose.data.dto.OrdersDTO;
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,8 +19,9 @@ import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -25,74 +30,68 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @ApplicationScoped
-public class MarketOrderGateway {
+public class AllOrdersGateway {
+
+    private static final Logger logger = LogManager.getLogger(AllOrdersGateway.class);
 
     private final List<String> BASE_URLS = List.of(
-            "https://api.binance.com/api/v3/order",
-            "https://api1.binance.com/api/v3/order",
-            "https://api2.binance.com/api/v3/order",
-            "https://api3.binance.com/api/v3/order"
+            "https://api.binance.com/api/v3/allOrders",
+            "https://api1.binance.com/api/v3/allOrders",
+            "https://api2.binance.com/api/v3/allOrders",
+            "https://api3.binance.com/api/v3/allOrders"
     );
 
     private final Jsonb jsonb;
     private final TimeGateway timeGateway;
-    private final ExchangeInfoGateway exchangeInfoGateway;
-    private final PriceGateway priceGateway;
-    private final AccountGateway accountGateway;
 
     private final Retry retry;
     private int attempt = 0;
 
-    public MarketOrderGateway() {
+    public AllOrdersGateway() {
         var config = new JsonbConfig().withDeserializers(
-                new OrderAckDeserializer());
+                new OrdersDeserializer(),
+                new OrderDeserializer());
         this.jsonb = JsonbBuilder.create(config);
         this.timeGateway = new TimeGateway();
-        this.priceGateway = new PriceGateway();
-        this.exchangeInfoGateway = new ExchangeInfoGateway();
-        this.accountGateway = new AccountGateway();
 
         RetryConfig retryConfig = RetryConfig.custom()
                 .maxAttempts(3)
                 .waitDuration(Duration.ofSeconds(2))
                 .retryOnResult(it -> {
+                    logger.info("attempt: {}", attempt);
                     attempt++;
                     Response response = (Response) it;
                     return response.getStatus() != 200;
                 })
                 .retryExceptions(Exception.class)
                 .build();
-        this.retry = Retry.of("market_retry", retryConfig);
-
+        this.retry = Retry.of("all_orders_retry", retryConfig);
     }
 
-    public OrderAckDTO order(LoginDTO login,
-                             MarketOrderAllFreeRequestDTO dto) {
+    public List<OrderDTO> get(LoginDTO login, String symbol) {
         attempt = 0;
         Supplier<Response> responseSupplier =
-                Retry.decorateSupplier(retry, () -> fetch(login, dto));
+                Retry.decorateSupplier(retry, () -> fetch(login, symbol));
 
         try (Response response = responseSupplier.get()) {
+            logger.info("status: {}", response.getStatus());
             if (response.getStatus() == 200) {
                 String json = response.readEntity(String.class);
-                return jsonb.fromJson(json, OrderAckDTO.class);
+                OrdersDTO orders = jsonb.fromJson(json, OrdersDTO.class);
+                return orders.orders();
             } else {
                 throw new RuntimeException("Error en la respuesta: " + response.getStatus());
             }
         }
     }
 
-    private Response fetch(LoginDTO login,
-                             MarketOrderAllFreeRequestDTO dto) {
-        BigDecimal quantity = getQuantity(login, dto);
-        Map<String, String> map = new HashMap<>();
-        map.put("symbol", dto.symbol().toUpperCase(Locale.ROOT));
-        map.put("side", dto.side().toString());
-        map.put("type", OrderType.MARKET.toString());
-        map.put("quoteOrderQty", quantity.toPlainString());
-        map.put("newOrderRespType", OrderResponseType.ACK.toString());
-        map.put("recvWindow", Long.toString(2500L));
-        map.put("timestamp", timeGateway.get().serverTime().toString());
+    private Response fetch(LoginDTO login, String symbol) {
+        Map<String, String> map = new HashMap<>(Map.of(
+                "symbol", symbol.toUpperCase(Locale.ROOT),
+                "limit", "20",
+                "recvWindow", Long.toString(2500L),
+                "timestamp", timeGateway.get().serverTime().toString()));
+
         map.put("signature", signature(map, login.secret()));
 
         String params = map.entrySet().stream()
@@ -106,35 +105,9 @@ public class MarketOrderGateway {
 
         Invocation.Builder request = target.request(MediaType.APPLICATION_JSON)
                 .header("X-MBX-APIKEY", login.key());
-        Response response = request.post(null);
+        Response response = request.get();
         client.close();
         return response;
-    }
-
-    private BigDecimal getQuantity(LoginDTO login, MarketOrderAllFreeRequestDTO dto) {
-        SymbolDTO symbol = exchangeInfoGateway.get(dto.symbol())
-                .symbols()
-                .get(0);
-        if (dto.side().equals(OrderSide.BUY)) {
-            return accountGateway.get(login)
-                    .balances()
-                    .stream()
-                    .filter(it -> it.asset().equalsIgnoreCase(symbol.quoteAsset()))
-                    .findFirst()
-                    .get()
-                    .free();
-        } else {
-            BigDecimal price = priceGateway.get(dto.symbol())
-                    .price();
-            BigDecimal amount = accountGateway.get(login)
-                    .balances()
-                    .stream()
-                    .filter(it -> it.asset().equalsIgnoreCase(symbol.baseAsset()))
-                    .findFirst()
-                    .get()
-                    .free();
-            return price.multiply(amount);
-        }
     }
 
     private String signature(Map<String, String> map, String secret) {
