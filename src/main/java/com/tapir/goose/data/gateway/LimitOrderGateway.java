@@ -14,12 +14,13 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 @ApplicationScoped
-public class MarketOrderGateway {
+public class LimitOrderGateway {
 
     protected static final String base = "https://api.binance.com/api/v3";
 
@@ -30,8 +31,8 @@ public class MarketOrderGateway {
     private final PriceGateway priceGateway;
     private final AccountGateway accountGateway;
 
-    public MarketOrderGateway() {
-        this.url = base.concat("/order/test");
+    public LimitOrderGateway() {
+        this.url = base.concat("/order");
         var config = new JsonbConfig().withDeserializers(
                 new AccountDeserializer());
         this.jsonb = JsonbBuilder.create(config);
@@ -42,13 +43,16 @@ public class MarketOrderGateway {
     }
 
     public OrderAckDTO order(LoginDTO login,
-                             MarketOrderAllFreeRequestDTO dto) {
+                             LimitOrderAllFreeRequestDTO dto) {
         BigDecimal quantity = getQuantity(login, dto);
+        BigDecimal price = getPrice(dto);
         Map<String, String> map = new HashMap<>();
         map.put("symbol", dto.symbol().toUpperCase(Locale.ROOT));
         map.put("side", dto.side().toString());
-        map.put("type", OrderType.MARKET.toString());
-        map.put("quoteOrderQty", quantity.toPlainString());
+        map.put("type", OrderType.LIMIT.toString());
+        map.put("price", price.toPlainString());
+        map.put("timeInForce", TimeInForce.GTC.toString());
+        map.put("quantity", quantity.toPlainString());
         map.put("newOrderRespType", OrderResponseType.ACK.toString());
         map.put("recvWindow", Long.toString(2500L));
         map.put("timestamp", timeGateway.get().serverTime().toString());
@@ -73,21 +77,50 @@ public class MarketOrderGateway {
         return result;
     }
 
-    private BigDecimal getQuantity(LoginDTO login, MarketOrderAllFreeRequestDTO dto) {
+    private BigDecimal getPrice(LimitOrderAllFreeRequestDTO dto) {
+        BigDecimal tickSize = exchangeInfoGateway.get(dto.symbol())
+                .symbols()
+                .get(0)
+                .filters()
+                .stream()
+                .filter(it -> it.filterType().equalsIgnoreCase("PRICE_FILTER"))
+                .findFirst()
+                .get()
+                .tickSize();
+        BigDecimal result = BigDecimal.ZERO;
+        while (dto.price().compareTo(result) > 0) {
+            result = result.add(tickSize);
+        }
+        return result;
+    }
+
+    private BigDecimal getQuantity(LoginDTO login, LimitOrderAllFreeRequestDTO dto) {
         SymbolDTO symbol = exchangeInfoGateway.get(dto.symbol())
                 .symbols()
                 .get(0);
+        BigDecimal stepSize = symbol.filters()
+                .stream()
+                .filter(it -> it.filterType().equalsIgnoreCase("LOT_SIZE"))
+                .findFirst()
+                .get()
+                .stepSize();
         if (dto.side().equals(OrderSide.BUY)) {
-            return accountGateway.get(login)
+            BigDecimal price = priceGateway.get(dto.symbol())
+                    .price();
+            BigDecimal amount = accountGateway.get(login)
                     .balances()
                     .stream()
                     .filter(it -> it.asset().equalsIgnoreCase(symbol.quoteAsset()))
                     .findFirst()
                     .get()
                     .free();
+            BigDecimal quantity = amount.divide(price, RoundingMode.DOWN);
+            BigDecimal result = BigDecimal.ZERO;
+            while (quantity.compareTo(result) > 0) {
+                result = result.add(stepSize);
+            }
+            return result;
         } else {
-            BigDecimal price = priceGateway.get(dto.symbol())
-                    .price();
             BigDecimal amount = accountGateway.get(login)
                     .balances()
                     .stream()
@@ -95,7 +128,11 @@ public class MarketOrderGateway {
                     .findFirst()
                     .get()
                     .free();
-            return price.multiply(amount);
+            BigDecimal result = BigDecimal.ZERO;
+            while (amount.compareTo(result) > 0) {
+                result = result.add(stepSize);
+            }
+            return result;
         }
     }
 
