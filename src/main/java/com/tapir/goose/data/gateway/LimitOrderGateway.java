@@ -62,7 +62,7 @@ public class LimitOrderGateway {
                 })
                 .retryExceptions(Exception.class)
                 .build();
-        this.retry = Retry.of("restClientRetry", retryConfig);
+        this.retry = Retry.of("limit_retry", retryConfig);
     }
 
     public OrderAckDTO order(LoginDTO login,
