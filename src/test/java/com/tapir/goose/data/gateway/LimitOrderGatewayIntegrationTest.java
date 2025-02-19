@@ -30,7 +30,7 @@ class LimitOrderGatewayIntegrationTest {
     }
 
     //@Test
-    @DisplayName("Binance order market")
+    @DisplayName("Binance order limit")
     void test() {
         var response = gateway.order(login, dto);
         assertNotEquals(0, "dto.balances().size()");
