@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 public class UserDataService {
@@ -35,8 +36,9 @@ public class UserDataService {
             objective = objective.add(step);
         }
         return new UserVDO("Username",
-                "usdt",
+                "usdt".toUpperCase(Locale.ROOT),
                 BigDecimal.valueOf(0.5D),
-                objective);
+                objective,
+                usdt.setScale(0, BigDecimal.ROUND_DOWN));
     }
 }

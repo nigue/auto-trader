@@ -20,11 +20,11 @@
         <h:outputText value="#{site.user.market()} SELL"/>
         <h:outputText value="#{site.user.sell()}%"/>
 
-        <h:outputText value="OBJ: 1.2%"/>
+        <h:outputText value="$ Objective: "/>
         <h:outputText value="#{site.user.objective()}"/>
 
-        <h:outputText value="Actual"/>
-        <h:outputText value="#{site.wallet.market()}"/>
+        <h:outputText value="$ Actual"/>
+            <h:outputText value="#{site.user.actual()}"/>
     </p:panelGrid>
     <p:divider />
     <h:panelGroup rendered="#{site.wallet.free()}">
