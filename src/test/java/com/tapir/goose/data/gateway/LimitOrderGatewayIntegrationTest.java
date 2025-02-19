@@ -23,6 +23,7 @@ class LimitOrderGatewayIntegrationTest {
         String key = System.getenv("BINANCE_KEY");
         String secret = System.getenv("BINANCE_SECRET");
         login = new LoginDTO(key, secret);
+        //todo constructor with boolean testing
         gateway = new LimitOrderGateway();
         dto = new LimitOrderAllFreeRequestDTO("btcusdt",
                 OrderSide.BUY,
