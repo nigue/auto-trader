@@ -4,7 +4,7 @@ import com.tapir.goose.data.dto.LoginDTO;
 import com.tapir.goose.service.UserDataService;
 import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
-import com.tapir.goose.view.pojo.WalletVDO;
+import com.tapir.goose.view.pojo.OperationVDO;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -63,14 +63,14 @@ public class LoginView implements Serializable {
         }
         try {
 
-            WalletVDO walletVDO = new WalletVDO(true,
+            OperationVDO walletVDO = new OperationVDO(true,
                     "usdt",
                     BigDecimal.valueOf(32000D),
                     BigDecimal.valueOf(104000D),
                     BigDecimal.valueOf(103000D),
                     BigDecimal.valueOf(102000D),
                     "29/12 00:42");
-            putValue("wallet", walletVDO);
+            putValue("operation", walletVDO);
             var row = new BinanceVDO("BTC-USDT",
                     "15m",
                     5,

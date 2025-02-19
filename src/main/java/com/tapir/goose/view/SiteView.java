@@ -2,7 +2,7 @@ package com.tapir.goose.view;
 
 import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
-import com.tapir.goose.view.pojo.WalletVDO;
+import com.tapir.goose.view.pojo.OperationVDO;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
@@ -28,7 +28,7 @@ public class SiteView implements Serializable {
     private String secret;
     private String selectedSymbol;
     private UserVDO user;
-    private WalletVDO wallet;
+    private OperationVDO operation;
     private List<BinanceVDO> symbols;
 
     @PostConstruct
@@ -45,7 +45,7 @@ public class SiteView implements Serializable {
 
         logger.info("Navigate to site with key: {}", key);
         user = getFlashAttribute(USER, UserVDO.class);
-        wallet = getFlashAttribute(WALLET, WalletVDO.class);
+        operation = getFlashAttribute(OPERATION, OperationVDO.class);
         symbols = getFlashAttributeList(SYMBOLS, BinanceVDO.class);
     }
 
@@ -130,8 +130,8 @@ public class SiteView implements Serializable {
         return user;
     }
 
-    public WalletVDO getWallet() {
-        return wallet;
+    public OperationVDO getOperation() {
+        return operation;
     }
 
     public List<BinanceVDO> getSymbols() {
