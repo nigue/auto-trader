@@ -1,6 +1,10 @@
 package com.tapir.goose.view;
 
+import com.tapir.goose.data.dto.AccountDTO;
 import com.tapir.goose.data.dto.LoginDTO;
+import com.tapir.goose.data.gateway.AccountGateway;
+import com.tapir.goose.service.OperationService;
+import com.tapir.goose.service.OptionsService;
 import com.tapir.goose.service.UserDataService;
 import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
@@ -16,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Named("login")
@@ -27,7 +32,13 @@ public class LoginView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
+    private AccountGateway accountGateway;
+    @Inject
     private UserDataService userDataService;
+    @Inject
+    private OperationService operationService;
+    @Inject
+    private OptionsService optionsService;
 
     private double progress = 0d;
     private Boolean condition = true;
@@ -62,42 +73,26 @@ public class LoginView implements Serializable {
             return "";
         }
         try {
-
-            OperationVDO walletVDO = new OperationVDO(true,
-                    "usdt",
-                    BigDecimal.valueOf(32000D),
-                    BigDecimal.valueOf(104000D),
-                    BigDecimal.valueOf(103000D),
-                    BigDecimal.valueOf(102000D),
-                    "29/12 00:42");
-            putValue("operation", walletVDO);
-            var row = new BinanceVDO("BTC-USDT",
-                    "15m",
-                    5,
-                    BigDecimal.valueOf(-3.12345D));
-            List<BinanceVDO> symbols = Arrays.asList(row, row);
-            putValue("symbols", symbols);
-
-
             LoginDTO login = new LoginDTO(key, secret);
-            UserVDO userVDO = userDataService.process(login);
+            AccountDTO account = accountGateway.get(login);
+            progress += 20;
+            logger.info("progress {}", progress);
+            UserVDO userVDO = userDataService.process(account);
             putValue("user", userVDO);
             progress += 20;
             logger.info("progress {}", progress);
-            Thread.sleep(2000);
+            OperationVDO operation = operationService.process(account);
+            putValue("operation", operation);
             progress += 20;
             logger.info("progress {}", progress);
-            Thread.sleep(2000);
-            progress += 20;
+            List<BinanceVDO> symbols = Collections.emptyList();
+            if (operation.free()) {
+                symbols = optionsService.process();
+            }
+            putValue("symbols", symbols);
+            progress += 30;
             logger.info("progress {}", progress);
             Thread.sleep(2000);
-            progress += 20;
-            logger.info("progress {}", progress);
-            Thread.sleep(2000);
-            progress += 10;
-            logger.info("progress {}", progress);
-            Thread.sleep(2000);
-            
             putValue("key", key);
             putValue("secret", secret);
             progress += 10;

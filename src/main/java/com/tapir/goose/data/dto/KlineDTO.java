@@ -13,4 +13,8 @@ public record KlineDTO(
         BigDecimal assetVolume,
         Integer trades
 ) {
+
+    public boolean isRed() {
+        return open.compareTo(close) > 0;
+    }
 }

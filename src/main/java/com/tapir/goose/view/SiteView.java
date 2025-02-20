@@ -34,6 +34,7 @@ public class SiteView implements Serializable {
     @PostConstruct
     public void init() {
         logger.info("Enter to Site");
+        progress = 0d;
         key = (String) FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getFlash()

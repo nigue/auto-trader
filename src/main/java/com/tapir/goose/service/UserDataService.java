@@ -1,8 +1,10 @@
 package com.tapir.goose.service;
 
+import com.tapir.goose.data.dto.AccountDTO;
 import com.tapir.goose.data.dto.BalanceDTO;
 import com.tapir.goose.data.dto.LoginDTO;
 import com.tapir.goose.data.gateway.AccountGateway;
+import com.tapir.goose.data.gateway.PriceGateway;
 import com.tapir.goose.view.pojo.UserVDO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,11 +17,10 @@ import java.util.Locale;
 public class UserDataService {
 
     @Inject
-    private AccountGateway accountGateway;
+    private PriceGateway priceGateway;
 
-    public UserVDO process(LoginDTO login) {
-        List<BalanceDTO> balances = accountGateway.get(login)
-                .balances();
+    public UserVDO process(AccountDTO account) {
+        List<BalanceDTO> balances = account.balances();
         BigDecimal usdt = balances.stream()
                 .filter(it -> it.asset().equalsIgnoreCase("usdt"))
                 .findFirst()
