@@ -19,6 +19,7 @@ public class OrderDeserializer implements JsonbDeserializer<OrderDTO> {
                                 Type typeClass) {
         String key = null;
         String symbol = "";
+        String clientOrderId = "";
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal origQty = BigDecimal.ZERO;
         BigDecimal executedQty = BigDecimal.ZERO;
@@ -36,6 +37,9 @@ public class OrderDeserializer implements JsonbDeserializer<OrderDTO> {
                 case VALUE_STRING -> {
                     if ("symbol".equals(key)) {
                         symbol = parser.getString();
+                    }
+                    if ("clientOrderId".equals(key)) {
+                        clientOrderId = parser.getString();
                     }
                     if ("price".equals(key)) {
                         price = new BigDecimal(parser.getString());
@@ -75,6 +79,7 @@ public class OrderDeserializer implements JsonbDeserializer<OrderDTO> {
             }
         }
         return new OrderDTO(symbol,
+                clientOrderId,
                 price,
                 origQty,
                 executedQty,

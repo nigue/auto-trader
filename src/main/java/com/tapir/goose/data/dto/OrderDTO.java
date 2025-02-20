@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public record OrderDTO(
         String symbol,
+        String clientOrderId,
         BigDecimal price,
         BigDecimal origQty,
         BigDecimal executedQty,

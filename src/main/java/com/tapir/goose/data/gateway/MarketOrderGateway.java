@@ -1,6 +1,5 @@
 package com.tapir.goose.data.gateway;
 
-import com.tapir.goose.data.deserializer.AccountDeserializer;
 import com.tapir.goose.data.deserializer.OrderAckDeserializer;
 import com.tapir.goose.data.dto.*;
 import io.github.resilience4j.retry.Retry;

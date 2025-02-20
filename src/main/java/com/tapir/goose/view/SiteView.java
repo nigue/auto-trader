@@ -1,5 +1,9 @@
 package com.tapir.goose.view;
 
+import com.tapir.goose.data.dto.*;
+import com.tapir.goose.data.gateway.AllOrdersGateway;
+import com.tapir.goose.data.gateway.LimitOrderGateway;
+import com.tapir.goose.data.gateway.MarketOrderGateway;
 import com.tapir.goose.view.pojo.BinanceVDO;
 import com.tapir.goose.view.pojo.UserVDO;
 import com.tapir.goose.view.pojo.OperationVDO;
@@ -7,11 +11,14 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static com.tapir.goose.view.ViewConstants.*;
@@ -21,6 +28,18 @@ import static com.tapir.goose.view.ViewConstants.*;
 public class SiteView implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(SiteView.class);
+
+    private static final BigDecimal HUNDRED = BigDecimal.valueOf(100L);
+    private static final BigDecimal SCALPING = BigDecimal.valueOf(105L);
+
+    @Inject
+    private MarketOrderGateway marketOrderGateway;
+
+    @Inject
+    private AllOrdersGateway allOrdersGateway;
+
+    @Inject
+    private LimitOrderGateway limitOrderGateway;
 
     private double progress = 0d;
     private Boolean condition = true;
@@ -87,15 +106,32 @@ public class SiteView implements Serializable {
             return "";
         }
         try {
+            LoginDTO login = new LoginDTO(key, secret);
             progress += 20;
             logger.info("progress {}", progress);
-            Thread.sleep(2000);
+            MarketOrderAllFreeRequestDTO market = new MarketOrderAllFreeRequestDTO(
+                    selectedSymbol,
+                    OrderSide.BUY);
+            OrderAckDTO marketOrder = marketOrderGateway.order(login, market);
             progress += 20;
             logger.info("progress {}", progress);
-            Thread.sleep(2000);
+            BigDecimal marketPrice = allOrdersGateway.get(login, marketOrder.symbol())
+                    .stream()
+                    .filter(it -> it.status().equals(OrderStatus.NEW))
+                    .filter(it -> it.clientOrderId().equalsIgnoreCase(marketOrder.clientOrderId()))
+                    .findFirst()
+                    .get()
+                    .price();
+            BigDecimal limitPrice = marketPrice.multiply(SCALPING)
+                    .divide(HUNDRED, RoundingMode.DOWN);
             progress += 20;
             logger.info("progress {}", progress);
-            Thread.sleep(2000);
+            logger.info("limitPrice {}", limitPrice);
+            LimitOrderAllFreeRequestDTO limit = new LimitOrderAllFreeRequestDTO(
+                    marketOrder.symbol(),
+                    OrderSide.SELL,
+                    limitPrice);
+            //OrderAckDTO limitOrder = limitOrderGateway.order(login, limit);
             progress += 20;
             logger.info("progress {}", progress);
             Thread.sleep(2000);
