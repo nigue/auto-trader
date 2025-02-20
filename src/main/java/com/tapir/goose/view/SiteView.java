@@ -126,6 +126,7 @@ public class SiteView implements Serializable {
                     .divide(HUNDRED, RoundingMode.DOWN);
             progress += 20;
             logger.info("progress {}", progress);
+            logger.info("symbol {}", marketOrder.symbol());
             logger.info("limitPrice {}", limitPrice);
             LimitOrderAllFreeRequestDTO limit = new LimitOrderAllFreeRequestDTO(
                     marketOrder.symbol(),
