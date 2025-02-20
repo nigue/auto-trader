@@ -30,7 +30,7 @@ public class SiteView implements Serializable {
     private static final Logger logger = LogManager.getLogger(SiteView.class);
 
     private static final BigDecimal HUNDRED = BigDecimal.valueOf(100L);
-    private static final BigDecimal SCALPING = BigDecimal.valueOf(105L);
+    private static final BigDecimal SCALPING = BigDecimal.valueOf(100.5D);
 
     @Inject
     private MarketOrderGateway marketOrderGateway;
@@ -127,7 +127,8 @@ public class SiteView implements Serializable {
             progress += 20;
             logger.info("progress {}", progress);
             logger.info("symbol {}", marketOrder.symbol());
-            logger.info("limitPrice {}", limitPrice);
+            logger.info("BUY marketPrice {}", marketPrice);
+            logger.info("SELL limitPrice {}", limitPrice);
             LimitOrderAllFreeRequestDTO limit = new LimitOrderAllFreeRequestDTO(
                     marketOrder.symbol(),
                     OrderSide.SELL,
