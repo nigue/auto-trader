@@ -51,9 +51,13 @@ public class OptionsService {
                 red++;
             }
         }
-        BigDecimal fall = HUNDRED.multiply(klines.get(limit - 1).close())
-                .divide(klines.get(limit - 1).close(), RoundingMode.DOWN)
+        KlineDTO lastKline = klines.get(limit - 1);
+        BigDecimal fall = HUNDRED.multiply(lastKline.close())
+                .divide(lastKline.close(), RoundingMode.DOWN)
                 .subtract(HUNDRED);
+        if (!lastKline.isRed()) {
+            red = 1;
+        }
         return new BinanceVDO(symbol,
                 interval.name(),
                 red,
