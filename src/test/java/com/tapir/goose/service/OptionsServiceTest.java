@@ -1,7 +1,9 @@
 package com.tapir.goose.service;
 
+import com.tapir.goose.data.gateway.KlineGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -11,13 +13,13 @@ class OptionsServiceTest {
 
     @BeforeEach
     void init() {
-        gateway = new OptionsService();
+        gateway = new OptionsService(new KlineGateway());
     }
 
-    //@Test
+    @Test
     @DisplayName("Service options")
     void test() {
         var dto = gateway.process();
-        assertNotEquals(0, 0);
+        assertNotEquals(0, dto.size());
     }
 }

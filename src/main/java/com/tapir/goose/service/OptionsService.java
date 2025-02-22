@@ -6,6 +6,8 @@ import com.tapir.goose.data.gateway.KlineGateway;
 import com.tapir.goose.view.pojo.BinanceVDO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,10 +19,10 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class OptionsService {
 
+    private static final Logger logger = LogManager.getLogger(OptionsService.class);
     private static final BigDecimal HUNDRED = BigDecimal.valueOf(100L);
 
-    @Inject
-    private KlineGateway klineGateway;
+    private final KlineGateway klineGateway;
     private List<String> availableSymbols = Arrays.asList(
             "BTCUSDT",
             "ETHUSDT",
@@ -31,6 +33,11 @@ public class OptionsService {
             "DASHUSDT",
             "IOTAUSDT"
     );
+
+    @Inject
+    public OptionsService(KlineGateway klineGateway) {
+        this.klineGateway = klineGateway;
+    }
 
     public List<BinanceVDO> process() {
         return availableSymbols.stream()
@@ -45,19 +52,20 @@ public class OptionsService {
         int limit = 10;
         List<KlineDTO> klines = klineGateway.findAll(symbol, interval, limit);
         klines.sort(Comparator.comparing(KlineDTO::closeTime));
-        Integer red = 0;
-        for (KlineDTO kline : klines) {
-            if (kline.isRed()) {
-                red++;
-            }
-        }
-        KlineDTO lastKline = klines.get(limit - 1);
-        BigDecimal fall = HUNDRED.multiply(lastKline.close())
-                .divide(lastKline.close(), RoundingMode.DOWN)
-                .subtract(HUNDRED);
-        if (!lastKline.isRed()) {
+        int red = (int) klines.stream().filter(KlineDTO::isRed).count();
+        if (!klines.get(limit - 1).isRed()) {
             red = 1;
         }
+        BigDecimal firstPrice = klines.get(0).open();
+        BigDecimal lastPrice = klines.get(limit - 1).close();
+        BigDecimal fall = HUNDRED.multiply(lastPrice)
+                .divide(firstPrice, RoundingMode.DOWN)
+                .subtract(HUNDRED);
+        logger.info("symbol: {}", symbol);
+        logger.info("red: {}", red);
+        logger.info("firstPrice: {}", firstPrice);
+        logger.info("lastPrice: {}", lastPrice);
+        logger.info("fall: {}", fall);
         return new BinanceVDO(symbol,
                 interval.name(),
                 red,
