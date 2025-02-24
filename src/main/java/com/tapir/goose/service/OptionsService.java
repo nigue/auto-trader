@@ -22,7 +22,8 @@ public class OptionsService {
     private static final Logger logger = LogManager.getLogger(OptionsService.class);
     private static final BigDecimal HUNDRED = BigDecimal.valueOf(100L);
 
-    private final KlineGateway klineGateway;
+    @Inject
+    private KlineGateway klineGateway;
     private List<String> availableSymbols = Arrays.asList(
             "BTCUSDT",
             "ETHUSDT",
@@ -33,11 +34,6 @@ public class OptionsService {
             "DASHUSDT",
             "IOTAUSDT"
     );
-
-    @Inject
-    public OptionsService(KlineGateway klineGateway) {
-        this.klineGateway = klineGateway;
-    }
 
     public List<BinanceVDO> process() {
         return availableSymbols.stream()
