@@ -13,10 +13,12 @@ class OptionsServiceTest {
 
     @BeforeEach
     void init() {
-        gateway = new OptionsService();
+        gateway = new OptionsService(
+                new KlineGateway()
+        );
     }
 
-    //@Test
+    @Test
     @DisplayName("Service options")
     void test() {
         var dto = gateway.process();

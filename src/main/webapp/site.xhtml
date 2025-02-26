@@ -50,10 +50,10 @@
                 <div class="field col-12 md:col-4">
                     <p:outputLabel for="@next" value="Basic"/>
                     <p:selectOneMenu id="option" value="#{site.selectedSymbol}">
-                        <f:selectItem itemLabel="Select One" itemValue=""/>
-                        <f:selectItem itemLabel="Option1" itemValue="Option1"/>
-                        <f:selectItem itemLabel="Option2" itemValue="Option2"/>
-                        <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                        <f:selectItems value="#{site.symbols}"
+                                       var="symbol"
+                                       itemLabel="#{symbol.symbol()}"
+                                       itemValue="#{symbol.symbol()}"/>
                     </p:selectOneMenu>
                 </div>
             </div>

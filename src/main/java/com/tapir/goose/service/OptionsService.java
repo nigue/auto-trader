@@ -14,6 +14,7 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -22,8 +23,7 @@ public class OptionsService {
     private static final Logger logger = LogManager.getLogger(OptionsService.class);
     private static final BigDecimal HUNDRED = BigDecimal.valueOf(100L);
 
-    @Inject
-    private KlineGateway klineGateway;
+    private final KlineGateway klineGateway;
     private List<String> availableSymbols = Arrays.asList(
             "BTCUSDT",
             "ETHUSDT",
@@ -35,11 +35,15 @@ public class OptionsService {
             "IOTAUSDT"
     );
 
+    @Inject
+    public OptionsService(KlineGateway klineGateway) {
+        this.klineGateway = klineGateway;
+    }
+
     public List<BinanceVDO> process() {
         return availableSymbols.stream()
                 .map(this::analysisSymbol)
-                .filter(it -> it.red() > 6)
-                .filter(it -> BigDecimal.ZERO.compareTo(it.fall()) > 0)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -49,9 +53,6 @@ public class OptionsService {
         List<KlineDTO> klines = klineGateway.findAll(symbol, interval, limit);
         klines.sort(Comparator.comparing(KlineDTO::closeTime));
         int red = (int) klines.stream().filter(KlineDTO::isRed).count();
-        if (!klines.get(limit - 1).isRed()) {
-            red = 1;
-        }
         BigDecimal firstPrice = klines.get(0).open();
         BigDecimal lastPrice = klines.get(limit - 1).close();
         BigDecimal fall = HUNDRED.multiply(lastPrice)
@@ -62,9 +63,30 @@ public class OptionsService {
         logger.info("firstPrice: {}", firstPrice);
         logger.info("lastPrice: {}", lastPrice);
         logger.info("fall: {}", fall);
+        if (!okConditions(symbol, limit, klines, red, fall)) {
+            return null;
+        }
         return new BinanceVDO(symbol,
                 interval.name(),
                 red,
                 fall);
+    }
+
+    private boolean okConditions(String symbol,
+                                 int limit,
+                                 List<KlineDTO> klines,
+                                 int red,
+                                 BigDecimal fall) {
+        boolean last1Red = klines.get(limit - 1).isRed();
+        boolean last2Red = klines.get(limit - 2).isRed();
+        boolean last3Red = klines.get(limit - 3).isRed();
+        boolean totalOk = 6 < red;
+        boolean isNegative = BigDecimal.ZERO.compareTo(fall) > 0;
+
+        return last1Red
+                && last2Red
+                && last3Red
+                && totalOk
+                && isNegative;
     }
 }
